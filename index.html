@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SocialNet — Sua Rede Social (Texto)</title>
+  <title>SocialNet — Sua Rede Social (Avatares Estilizados)</title>
   <style>
     /* ===== RESET & VARIÁVEIS ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,6 +67,35 @@
     }
     .nav-btn:hover { background: rgba(255,255,255,.28); }
 
+    /* ===== AVATAR SYSTEM (NO IMAGES) ===== */
+    .avatar-box {
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .avatar-bg-circle {
+      width: 100%; height: 100%;
+      background: #e2e8f0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+    .avatar-emoji { font-size: 1.8em; z-index: 2; }
+    .avatar-accessory {
+      position: absolute; top: 5%; right: 5%;
+      font-size: 0.9em; z-index: 3;
+    }
+    .avatar-shape {
+      position: absolute; inset: 0;
+      opacity: 0.2; z-index: 1;
+    }
+
+    /* Tamanhos */
+    .avatar-xl { width: 72px; height: 72px; font-size: 24px; }
+    .avatar-md { width: 44px; height: 44px; font-size: 16px; }
+    .avatar-sm { width: 32px; height: 32px; font-size: 12px; }
+
     /* ===== LAYOUT ===== */
     .layout {
       display: grid;
@@ -108,15 +137,9 @@
       height: 80px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
     }
-    .profile-avatar-placeholder {
+    .profile-avatar-wrap {
       margin-top: -36px;
       display: flex; justify-content: center;
-    }
-    .profile-initials {
-      width: 72px; height: 72px; border-radius: 50%;
-      border: 3px solid #fff; background: var(--primary);
-      color: #fff; display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 1.5rem;
     }
     .profile-name { margin-top: 8px; font-weight: 700; font-size: 1rem; }
     .profile-bio { font-size: .82rem; color: var(--muted); margin: 4px 0 12px; }
@@ -139,11 +162,6 @@
       background: #ede9fe; color: var(--primary);
     }
     .menu-list li a .ico { font-size: 1.1rem; }
-    .badge {
-      margin-left: auto; background: var(--accent); color: #fff;
-      font-size: .7rem; font-weight: 700;
-      padding: 2px 7px; border-radius: 999px;
-    }
 
     /* ===== FEED CENTRAL ===== */
     .feed { display: flex; flex-direction: column; gap: 16px; }
@@ -151,12 +169,6 @@
     /* Caixa de nova publicação */
     .new-post-card .card-body { display: flex; flex-direction: column; gap: 12px; }
     .new-post-top { display: flex; gap: 10px; align-items: flex-start; }
-    .user-initials-small {
-      width: 42px; height: 42px; border-radius: 50%; 
-      background: var(--primary); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 1rem; flex-shrink: 0;
-    }
     .new-post-top textarea {
       flex: 1; border: 1px solid var(--border); border-radius: 10px;
       padding: 10px 14px; font-size: .9rem; resize: none;
@@ -168,14 +180,6 @@
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 8px;
     }
-    .post-tools { display: flex; gap: 8px; }
-    .tool-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: .85rem;
-      display: flex; align-items: center; gap: 4px;
-      padding: 6px 10px; border-radius: 8px; transition: background .15s;
-    }
-    .tool-btn:hover { background: var(--bg); color: var(--primary); }
     .btn-publish {
       background: var(--primary); color: #fff;
       border: none; border-radius: 999px;
@@ -183,6 +187,19 @@
       cursor: pointer; transition: background .2s;
     }
     .btn-publish:hover { background: var(--primary-dk); }
+
+    /* Seletor de Avatar */
+    .avatar-selector {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-top: 10px; padding: 10px;
+      background: var(--bg); border-radius: 8px;
+    }
+    .selector-label { font-size: 0.75rem; color: var(--muted); width: 100%; margin-bottom: 4px; }
+    .opt-btn {
+      background: #fff; border: 1px solid var(--border);
+      padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+    }
+    .opt-btn.active { border-color: var(--primary); background: #ede9fe; color: var(--primary); }
 
     /* Post individual */
     .post-header {
@@ -192,12 +209,6 @@
     .post-meta { flex: 1; }
     .post-author { font-weight: 700; font-size: .92rem; }
     .post-time { font-size: .76rem; color: var(--muted); }
-    .post-menu-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 1.2rem; padding: 4px 8px;
-      border-radius: 6px; transition: background .15s;
-    }
-    .post-menu-btn:hover { background: var(--bg); }
     .post-text { padding: 12px 18px; font-size: .93rem; line-height: 1.55; }
     .post-counts {
       padding: 8px 18px;
@@ -218,7 +229,6 @@
     }
     .action-btn:hover { background: var(--bg); }
     .action-btn.liked { color: var(--accent); }
-    .action-btn.liked:hover { background: #fce7f3; }
 
     /* Comentários */
     .comments-section {
@@ -228,59 +238,36 @@
       flex-direction: column; gap: 10px;
     }
     .comments-section.open { display: flex; }
-    .comment {
-      display: flex; gap: 8px; align-items: flex-start;
-    }
+    .comment { display: flex; gap: 8px; align-items: flex-start; }
     .comment-bubble {
       background: var(--bg); border-radius: 10px;
       padding: 8px 12px; font-size: .84rem; flex: 1;
     }
     .comment-author { font-weight: 700; font-size: .8rem; margin-bottom: 2px; }
-    .comment-input-row {
-      display: flex; gap: 8px; align-items: center; margin-top: 4px;
-    }
+    .comment-input-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
     .comment-input {
       flex: 1; border: 1px solid var(--border); border-radius: 999px;
       padding: 7px 14px; font-size: .84rem; outline: none;
-      font-family: inherit; transition: border .2s;
+      font-family: inherit;
     }
-    .comment-input:focus { border-color: var(--primary); }
     .comment-send {
       background: var(--primary); color: #fff; border: none;
       border-radius: 50%; width: 32px; height: 32px;
-      cursor: pointer; font-size: .9rem; transition: background .2s;
-      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
-    .comment-send:hover { background: var(--primary-dk); }
 
     /* ===== SIDEBAR DIREITA ===== */
     .sidebar-right { display: flex; flex-direction: column; gap: 16px; }
-
-    .suggestion-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 0;
-    }
+    .suggestion-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
     .suggestion-item:not(:last-child) { border-bottom: 1px solid var(--border); }
     .suggestion-info { flex: 1; }
     .suggestion-name { font-weight: 600; font-size: .88rem; }
-    .suggestion-mutual { font-size: .75rem; color: var(--muted); }
     .btn-follow {
       background: none; border: 2px solid var(--primary);
       color: var(--primary); border-radius: 999px;
       padding: 4px 14px; font-size: .78rem; font-weight: 600;
-      cursor: pointer; transition: all .2s;
-    }
-    .btn-follow:hover, .btn-follow.following {
-      background: var(--primary); color: #fff;
-    }
-
-    .trend-item {
-      padding: 8px 0;
       cursor: pointer;
     }
-    .trend-item:not(:last-child) { border-bottom: 1px solid var(--border); }
-    .trend-tag { font-weight: 700; font-size: .88rem; color: var(--primary); }
-    .trend-count { font-size: .76rem; color: var(--muted); }
 
     /* ===== TOAST ===== */
     #toast {
@@ -292,10 +279,6 @@
       z-index: 300;
     }
     #toast.show { opacity: 1; }
-
-    /* ===== SCROLLBAR GLOBAL ===== */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   </style>
 </head>
 <body>
@@ -305,12 +288,11 @@
   <div class="nav-logo">Social<span>Net</span></div>
   <div class="nav-search">
     <span class="icon-search">🔍</span>
-    <input type="text" placeholder="Pesquisar textos, posts..." id="searchInput" />
+    <input type="text" placeholder="Pesquisar..." id="searchInput" />
   </div>
   <div class="nav-actions">
-    <button class="nav-btn" onclick="showToast('🔔 Nenhuma notificação nova')">🔔 Notificações</button>
-    <button class="nav-btn" onclick="showToast('💬 Nenhuma mensagem nova')">💬 Mensagens</button>
-    <div class="user-initials-small" title="Meu perfil">KV</div>
+    <button class="nav-btn" onclick="showToast('🔔 Sem notificações')">🔔</button>
+    <div id="navMyAvatar"></div>
   </div>
 </nav>
 
@@ -319,202 +301,144 @@
 
   <!-- ===== SIDEBAR ESQUERDA ===== -->
   <aside class="sidebar-left">
-
-    <!-- Perfil -->
     <div class="card profile-card">
       <div class="profile-cover"></div>
-      <div class="profile-avatar-placeholder">
-        <div class="profile-initials">KV</div>
-      </div>
+      <div class="profile-avatar-wrap" id="myAvatarLarge"></div>
       <div class="card-body" style="padding-top:8px;">
         <div class="profile-name">Ketrin Vitória</div>
-        <div class="profile-bio">✨ Apaixonada por tecnologia e café ☕</div>
+        <div class="profile-bio">✨ Personalizando meu avatar!</div>
+        
+        <!-- Personalização de Avatar -->
+        <div class="avatar-selector">
+          <div class="selector-label">Escolha seu Animal:</div>
+          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
+          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐶')">🐶</button>
+          <button class="opt-btn" onclick="updateMyAvatar('animal', '🦊')">🦊</button>
+          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐼')">🐼</button>
+          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐨')">🐨</button>
+          <button class="opt-btn" onclick="updateMyAvatar('animal', '🦁')">🦁</button>
+
+          <div class="selector-label">Escolha seu Acessório:</div>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">Nenhum</button>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '🕶️')">🕶️</button>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '👑')">👑</button>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎧')">🎧</button>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎩')">🎩</button>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '✨')">✨</button>
+
+          <div class="selector-label">Cor de Fundo:</div>
+          <button class="opt-btn" onclick="updateMyAvatar('bg', '#fee2e2')">🔴</button>
+          <button class="opt-btn" onclick="updateMyAvatar('bg', '#dcfce7')">🟢</button>
+          <button class="opt-btn" onclick="updateMyAvatar('bg', '#dbeafe')">🔵</button>
+          <button class="opt-btn" onclick="updateMyAvatar('bg', '#fef9c3')">🟡</button>
+          <button class="opt-btn" onclick="updateMyAvatar('bg', '#f5f3ff')">🟣</button>
+        </div>
+
         <div class="profile-stats">
-          <div class="stat"><div class="stat-num" id="postCount">3</div><div class="stat-lbl">Posts</div></div>
+          <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">Posts</div></div>
           <div class="stat"><div class="stat-num">248</div><div class="stat-lbl">Seguidores</div></div>
-          <div class="stat"><div class="stat-num">192</div><div class="stat-lbl">Seguindo</div></div>
         </div>
       </div>
     </div>
-
-    <!-- Menu -->
-    <div class="card">
-      <div class="card-body" style="padding:8px;">
-        <ul class="menu-list">
-          <li><a href="#" class="active"><span class="ico">🏠</span> Feed</a></li>
-          <li><a href="#" onclick="showToast('Seção Explorar em breve!')"><span class="ico">🔭</span> Explorar</a></li>
-          <li><a href="#" onclick="showToast('Seção Grupos em breve!')"><span class="ico">👥</span> Grupos <span class="badge">2</span></a></li>
-          <li><a href="#" onclick="showToast('Seção Eventos em breve!')"><span class="ico">📅</span> Eventos</a></li>
-          <li><a href="#" onclick="showToast('Seção Salvos em breve!')"><span class="ico">🔖</span> Salvos</a></li>
-          <li><a href="#" onclick="showToast('Configurações em breve!')"><span class="ico">⚙️</span> Configurações</a></li>
-        </ul>
-      </div>
-    </div>
-
   </aside>
 
   <!-- ===== FEED CENTRAL ===== -->
   <main class="feed" id="feed">
-
-    <!-- Nova publicação -->
     <div class="card new-post-card">
       <div class="card-header">📝 Nova Publicação</div>
       <div class="card-body">
         <div class="new-post-top">
-          <div class="user-initials-small">KV</div>
-          <textarea id="newPostText" placeholder="O que você está pensando, Ketrin?"></textarea>
+          <div id="myAvatarPost"></div>
+          <textarea id="newPostText" placeholder="O que você está pensando?"></textarea>
         </div>
         <div class="new-post-actions">
-          <div class="post-tools">
-            <button class="tool-btn" onclick="showToast('Sentimento: em breve!')">😊 Sentimento</button>
-            <button class="tool-btn" onclick="showToast('Local: em breve!')">📍 Local</button>
-          </div>
           <button class="btn-publish" onclick="publishPost()">Publicar</button>
         </div>
       </div>
     </div>
-
-    <!-- Posts serão injetados aqui pelo JS -->
-
   </main>
 
   <!-- ===== SIDEBAR DIREITA ===== -->
   <aside class="sidebar-right">
-
-    <!-- Sugestões -->
     <div class="card">
-      <div class="card-header">👤 Sugestões para você</div>
+      <div class="card-header">👤 Sugestões</div>
       <div class="card-body" id="suggestions"></div>
     </div>
-
-    <!-- Trending -->
-    <div class="card">
-      <div class="card-header">🔥 Em alta agora</div>
-      <div class="card-body" id="trending"></div>
-    </div>
-
   </aside>
 
 </div>
 
-<!-- ===== TOAST ===== -->
 <div id="toast"></div>
 
 <script>
   /* ============================================================
-     DADOS INICIAIS
+     CONFIGURAÇÃO DE AVATAR (SEM IMAGENS)
   ============================================================ */
-  const ME = {
-    name: 'Ketrin Vitória',
+  
+  // Função para gerar o HTML do avatar
+  function createAvatarHTML(config, sizeClass = 'avatar-md') {
+    return `
+      <div class="avatar-box ${sizeClass}" style="background-color: ${config.bg || '#e2e8f0'}">
+        <div class="avatar-bg-circle">
+          ${config.animal ? `<span class="avatar-emoji">${config.animal}</span>` : `<span style="color:var(--primary)">${config.initials || '?'}</span>`}
+        </div>
+        ${config.accessory ? `<span class="avatar-accessory">${config.accessory}</span>` : ''}
+        <div class="avatar-shape" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+      </div>
+    `;
+  }
+
+  let myAvatarConfig = {
+    animal: '🐱',
+    accessory: '🕶️',
+    bg: '#dbeafe',
     initials: 'KV'
   };
 
   const USERS = [
-    { id: 1,  name: 'Lucas Mendes',   initials: 'LM' },
-    { id: 2,  name: 'Ana Paula',      initials: 'AP'  },
-    { id: 3,  name: 'Rafael Costa',   initials: 'RC' },
-    { id: 4,  name: 'Juliana Souza',  initials: 'JS'  },
-    { id: 5,  name: 'Pedro Alves',    initials: 'PA' },
-    { id: 6,  name: 'Mariana Lima',   initials: 'ML' },
+    { name: 'Lucas Mendes', avatar: { animal: '🐶', accessory: '🎧', bg: '#dcfce7' } },
+    { name: 'Ana Paula',    avatar: { animal: '🦊', accessory: '✨', bg: '#fee2e2' } },
+    { name: 'Rafael Costa', avatar: { animal: '🦁', accessory: '👑', bg: '#fef9c3' } },
+    { name: 'Juliana Souza',avatar: { animal: '🐨', accessory: '🎩', bg: '#f5f3ff' } },
   ];
 
   let posts = [
-    {
-      id: 1,
-      user: USERS[0],
-      time: '2 horas atrás',
-      text: 'Acabei de terminar meu projeto de TCC! 🎉 Foram meses de trabalho duro, mas valeu cada segundo. Obrigado a todos que me apoiaram nessa jornada! #TCC #Formatura',
-      likes: 42,
-      liked: false,
-      comments: [
-        { user: USERS[1], text: 'Parabéns, Lucas! Você merece muito! 🥳' },
-        { user: USERS[3], text: 'Que conquista incrível! 🎓' },
-      ]
-    },
-    {
-      id: 2,
-      user: USERS[1],
-      time: '4 horas atrás',
-      text: 'Bom dia, pessoal! ☀️ Começando a semana com energia e muita gratidão. Que tal compartilhar algo positivo hoje? 💛',
-      likes: 87,
-      liked: false,
-      comments: [
-        { user: USERS[4], text: 'Bom dia! Ótima energia! 💪' },
-      ]
-    },
-    {
-      id: 3,
-      user: USERS[2],
-      time: '1 dia atrás',
-      text: 'Visitei o Jardim Botânico hoje e fiquei encantado com tanta beleza natural 🌿🌸 A natureza é incrível!',
-      likes: 134,
-      liked: false,
-      comments: []
-    }
-  ];
-
-  const SUGGESTIONS = [
-    { user: USERS[3], mutual: '5 amigos em comum' },
-    { user: USERS[4], mutual: '3 amigos em comum' },
-    { user: USERS[5], mutual: '8 amigos em comum' },
-  ];
-
-  const TRENDS = [
-    { tag: '#TechBrasil',   count: '12.4k posts' },
-    { tag: '#Programação',  count: '9.1k posts'  },
-    { tag: '#Formatura2025',count: '7.8k posts'  },
-    { tag: '#BomDia',       count: '5.3k posts'  },
-    { tag: '#NaturezaBela', count: '4.6k posts'  },
+    { id: 1, user: USERS[0], time: '2h atrás', text: 'Testando os novos avatares! 🐱🕶️ Ficou muito legal essa ideia de não usar fotos reais.', likes: 12, liked: false, comments: [] },
+    { id: 2, user: USERS[1], time: '5h atrás', text: 'Adorei meu avatar de raposinha com brilhos! ✨🦊', likes: 24, liked: false, comments: [] }
   ];
 
   /* ============================================================
-     RENDERIZAÇÃO
+     LOGICA DE ATUALIZAÇÃO
   ============================================================ */
 
-  function renderPost(post) {
-    const commentsHTML = post.comments.map(c => `
-      <div class="comment">
-        <div class="user-initials-small" style="width:32px; height:32px; font-size:0.8rem;">${c.user.initials || 'U'}</div>
-        <div class="comment-bubble">
-          <div class="comment-author">${c.user.name}</div>
-          ${c.text}
-        </div>
-      </div>
-    `).join('');
+  function updateMyAvatar(type, value) {
+    myAvatarConfig[type] = value;
+    renderMyAvatars();
+    renderAllPosts(); // Atualiza avatares nos posts do usuário
+    showToast('Avatar atualizado!');
+  }
 
+  function renderMyAvatars() {
+    document.getElementById('navMyAvatar').innerHTML = createAvatarHTML(myAvatarConfig, 'avatar-sm');
+    document.getElementById('myAvatarLarge').innerHTML = createAvatarHTML(myAvatarConfig, 'avatar-xl');
+    document.getElementById('myAvatarPost').innerHTML = createAvatarHTML(myAvatarConfig, 'avatar-md');
+  }
+
+  function renderPost(post) {
+    const userAvatar = post.user.avatar || myAvatarConfig;
     return `
-      <div class="card post-card" id="post-${post.id}">
+      <div class="card post-card">
         <div class="post-header">
-          <div class="user-initials-small">${post.user.initials}</div>
+          ${createAvatarHTML(userAvatar, 'avatar-md')}
           <div class="post-meta">
-            <div class="post-author">${post.user.name}</div>
+            <div class="post-author">${post.user.name || 'Você'}</div>
             <div class="post-time">${post.time}</div>
           </div>
-          <button class="post-menu-btn" onclick="showToast('Opções em breve!')">⋯</button>
         </div>
         <div class="post-text">${post.text}</div>
-        <div class="post-counts">
-          <span id="like-count-${post.id}">${post.likes} curtidas</span>
-          <span onclick="toggleComments(${post.id})" style="cursor:pointer">${post.comments.length} comentário${post.comments.length !== 1 ? 's' : ''}</span>
-        </div>
         <div class="post-actions">
-          <button class="action-btn ${post.liked ? 'liked' : ''}" id="like-btn-${post.id}" onclick="toggleLike(${post.id})">
-            ❤️ Curtir
-          </button>
-          <button class="action-btn" onclick="toggleComments(${post.id})">
-            💬 Comentar
-          </button>
-          <button class="action-btn" onclick="sharePost(${post.id})">
-            🔗 Compartilhar
-          </button>
-        </div>
-        <div class="comments-section" id="comments-${post.id}">
-          <div id="comments-list-${post.id}">${commentsHTML}</div>
-          <div class="comment-input-row">
-            <div class="user-initials-small" style="width:32px; height:32px; font-size:0.8rem;">${ME.initials}</div>
-            <input class="comment-input" id="comment-input-${post.id}" type="text" placeholder="Escreva um comentário..." onkeydown="if(event.key==='Enter') addComment(${post.id})" />
-            <button class="comment-send" onclick="addComment(${post.id})">➤</button>
-          </div>
+          <button class="action-btn" onclick="showToast('Curtiu!')">❤️ Curtir (${post.likes})</button>
+          <button class="action-btn" onclick="showToast('Comentários em breve')">💬 Comentar</button>
         </div>
       </div>
     `;
@@ -524,160 +448,43 @@
     const feed = document.getElementById('feed');
     const oldPosts = feed.querySelectorAll('.post-card');
     oldPosts.forEach(p => p.remove());
-
-    posts.forEach(post => {
-      feed.insertAdjacentHTML('beforeend', renderPost(post));
-    });
+    posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
   }
 
   function renderSuggestions() {
     const el = document.getElementById('suggestions');
-    el.innerHTML = SUGGESTIONS.map((s, i) => `
+    el.innerHTML = USERS.map(u => `
       <div class="suggestion-item">
-        <div class="user-initials-small" style="width:40px; height:40px;">${s.user.initials}</div>
+        ${createAvatarHTML(u.avatar, 'avatar-sm')}
         <div class="suggestion-info">
-          <div class="suggestion-name">${s.user.name}</div>
-          <div class="suggestion-mutual">${s.mutual}</div>
+          <div class="suggestion-name">${u.name}</div>
         </div>
-        <button class="btn-follow" id="follow-${i}" onclick="toggleFollow(${i})">Seguir</button>
+        <button class="btn-follow" onclick="showToast('Seguindo!')">Seguir</button>
       </div>
     `).join('');
-  }
-
-  function renderTrending() {
-    const el = document.getElementById('trending');
-    el.innerHTML = TRENDS.map(t => `
-      <div class="trend-item" onclick="showToast('Explorando ${t.tag}...')">
-        <div class="trend-tag">${t.tag}</div>
-        <div class="trend-count">${t.count}</div>
-      </div>
-    `).join('');
-  }
-
-  /* ============================================================
-     AÇÕES
-  ============================================================ */
-
-  function toggleLike(id) {
-    const post = posts.find(p => p.id === id);
-    if (!post) return;
-    post.liked = !post.liked;
-    post.likes += post.liked ? 1 : -1;
-    document.getElementById(`like-count-${id}`).textContent = `${post.likes} curtidas`;
-    const btn = document.getElementById(`like-btn-${id}`);
-    btn.classList.toggle('liked', post.liked);
-    showToast(post.liked ? '❤️ Você curtiu este post!' : '💔 Curtida removida');
-  }
-
-  function toggleComments(id) {
-    const section = document.getElementById(`comments-${id}`);
-    section.classList.toggle('open');
-    if (section.classList.contains('open')) {
-      document.getElementById(`comment-input-${id}`).focus();
-    }
-  }
-
-  function addComment(id) {
-    const input = document.getElementById(`comment-input-${id}`);
-    const text = input.value.trim();
-    if (!text) return;
-
-    const post = posts.find(p => p.id === id);
-    post.comments.push({ user: { name: ME.name, initials: ME.initials }, text });
-
-    const list = document.getElementById(`comments-list-${id}`);
-    list.insertAdjacentHTML('beforeend', `
-      <div class="comment">
-        <div class="user-initials-small" style="width:32px; height:32px; font-size:0.8rem;">${ME.initials}</div>
-        <div class="comment-bubble">
-          <div class="comment-author">${ME.name}</div>
-          ${text}
-        </div>
-      </div>
-    `);
-
-    const countEl = document.getElementById(`post-${id}`).querySelector('.post-counts span:last-child');
-    countEl.textContent = `${post.comments.length} comentário${post.comments.length !== 1 ? 's' : ''}`;
-
-    input.value = '';
-    showToast('💬 Comentário publicado!');
   }
 
   function publishPost() {
-    const textarea = document.getElementById('newPostText');
-    const text = textarea.value.trim();
-    if (!text) { showToast('✏️ Escreva algo antes de publicar!'); return; }
-
-    const newPost = {
-      id: Date.now(),
-      user: { name: ME.name, initials: ME.initials },
-      time: 'agora mesmo',
-      text,
-      likes: 0,
-      liked: false,
-      comments: []
-    };
-
-    posts.unshift(newPost);
-    textarea.value = '';
-
-    const newPostCard = document.querySelector('.new-post-card');
-    newPostCard.insertAdjacentHTML('afterend', renderPost(newPost));
-
-    const countEl = document.getElementById('postCount');
-    countEl.textContent = parseInt(countEl.textContent) + 1;
-
-    showToast('🎉 Post publicado com sucesso!');
+    const txt = document.getElementById('newPostText');
+    if (!txt.value.trim()) return;
+    const newP = { id: Date.now(), user: { name: 'Ketrin Vitória', avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0, comments: [] };
+    posts.unshift(newP);
+    txt.value = '';
+    renderAllPosts();
+    showToast('Postado!');
   }
 
-  function sharePost(id) {
-    showToast('🔗 Link copiado para a área de transferência!');
-  }
-
-  function toggleFollow(i) {
-    const btn = document.getElementById(`follow-${i}`);
-    const isFollowing = btn.classList.toggle('following');
-    btn.textContent = isFollowing ? 'Seguindo ✓' : 'Seguir';
-    showToast(isFollowing ? `✅ Você está seguindo ${SUGGESTIONS[i].user.name}!` : `❌ Você deixou de seguir ${SUGGESTIONS[i].user.name}`);
-  }
-
-  /* ============================================================
-     PESQUISA
-  ============================================================ */
-  document.getElementById('searchInput').addEventListener('input', function () {
-    const q = this.value.toLowerCase().trim();
-    if (!q) { renderAllPosts(); return; }
-    const feed = document.getElementById('feed');
-    const oldPosts = feed.querySelectorAll('.post-card');
-    oldPosts.forEach(p => p.remove());
-    const filtered = posts.filter(p =>
-      p.text.toLowerCase().includes(q) || p.user.name.toLowerCase().includes(q)
-    );
-    if (filtered.length === 0) {
-      feed.insertAdjacentHTML('beforeend', `<div class="card"><div class="card-body" style="text-align:center;color:var(--muted);padding:32px">Nenhum post encontrado para "<strong>${q}</strong>"</div></div>`);
-    } else {
-      filtered.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
-    }
-  });
-
-  /* ============================================================
-     TOAST
-  ============================================================ */
-  let toastTimer = null;
   function showToast(msg) {
     const el = document.getElementById('toast');
     el.textContent = msg;
     el.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+    setTimeout(() => el.classList.remove('show'), 2000);
   }
 
-  /* ============================================================
-     INIT
-  ============================================================ */
+  // Init
+  renderMyAvatars();
   renderAllPosts();
   renderSuggestions();
-  renderTrending();
 </script>
 </body>
 </html>
