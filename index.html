@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SocialNet — Sua Rede Social (Avatares Estilizados)</title>
+  <title>SocialNet — Sua Rede Social</title>
   <style>
     /* ===== RESET & VARIÁVEIS ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,7 +67,7 @@
     }
     .nav-btn:hover { background: rgba(255,255,255,.28); }
 
-    /* ===== AVATAR SYSTEM (NO IMAGES) ===== */
+    /* ===== AVATAR SYSTEM ===== */
     .avatar-box {
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
@@ -91,7 +91,6 @@
       opacity: 0.2; z-index: 1;
     }
 
-    /* Tamanhos */
     .avatar-xl { width: 72px; height: 72px; font-size: 24px; }
     .avatar-md { width: 44px; height: 44px; font-size: 16px; }
     .avatar-sm { width: 32px; height: 32px; font-size: 12px; }
@@ -114,7 +113,7 @@
       .sidebar-left { display: none; }
     }
 
-    /* ===== CARDS GENÉRICOS ===== */
+    /* ===== CARDS ===== */
     .card {
       background: var(--card);
       border-radius: var(--radius);
@@ -131,8 +130,7 @@
 
     /* ===== SIDEBAR ESQUERDA ===== */
     .sidebar-left { display: flex; flex-direction: column; gap: 16px; }
-
-    .profile-card { text-align: center; }
+    .profile-card { text-align: center; position: relative; }
     .profile-cover {
       height: 80px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -141,119 +139,68 @@
       margin-top: -36px;
       display: flex; justify-content: center;
     }
+    
+    /* Botão de Personalizar */
+    .btn-customize-avatar {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(255,255,255,0.2); border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      color: #fff; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, transform 0.2s;
+      z-index: 10;
+    }
+    .btn-customize-avatar:hover { background: rgba(255,255,255,0.4); transform: rotate(15deg); }
+
     .profile-name { margin-top: 8px; font-weight: 700; font-size: 1rem; }
     .profile-bio { font-size: .82rem; color: var(--muted); margin: 4px 0 12px; }
-    .profile-stats {
-      display: flex; justify-content: space-around;
-      border-top: 1px solid var(--border); padding-top: 12px;
-    }
-    .stat { text-align: center; }
-    .stat-num { font-weight: 700; font-size: 1rem; }
-    .stat-lbl { font-size: .72rem; color: var(--muted); }
 
-    .menu-list { list-style: none; }
-    .menu-list li a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; border-radius: 8px;
-      text-decoration: none; color: var(--text);
-      font-size: .9rem; transition: background .15s;
+    /* Painel de Personalização */
+    .customize-panel {
+      display: none;
+      background: #f8fafc; border-top: 1px solid var(--border);
+      padding: 16px; text-align: left;
+      animation: slideDown 0.3s ease-out;
     }
-    .menu-list li a:hover, .menu-list li a.active {
-      background: #ede9fe; color: var(--primary);
-    }
-    .menu-list li a .ico { font-size: 1.1rem; }
+    .customize-panel.active { display: block; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ===== FEED CENTRAL ===== */
+    .avatar-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .selector-label { font-size: 0.7rem; color: var(--muted); width: 100%; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
+    .opt-btn {
+      background: #fff; border: 1px solid var(--border);
+      padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .opt-btn:hover { border-color: var(--primary); }
+    .opt-btn.active { border-color: var(--primary); background: #ede9fe; color: var(--primary); }
+
+    /* ===== FEED ===== */
     .feed { display: flex; flex-direction: column; gap: 16px; }
-
-    /* Caixa de nova publicação */
     .new-post-card .card-body { display: flex; flex-direction: column; gap: 12px; }
     .new-post-top { display: flex; gap: 10px; align-items: flex-start; }
     .new-post-top textarea {
       flex: 1; border: 1px solid var(--border); border-radius: 10px;
       padding: 10px 14px; font-size: .9rem; resize: none;
-      font-family: inherit; outline: none; transition: border .2s;
-      min-height: 72px;
-    }
-    .new-post-top textarea:focus { border-color: var(--primary); }
-    .new-post-actions {
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 8px;
+      font-family: inherit; outline: none; min-height: 72px;
     }
     .btn-publish {
       background: var(--primary); color: #fff;
       border: none; border-radius: 999px;
       padding: 8px 22px; font-size: .88rem; font-weight: 600;
-      cursor: pointer; transition: background .2s;
+      cursor: pointer; align-self: flex-end;
     }
-    .btn-publish:hover { background: var(--primary-dk); }
 
-    /* Seletor de Avatar */
-    .avatar-selector {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      margin-top: 10px; padding: 10px;
-      background: var(--bg); border-radius: 8px;
-    }
-    .selector-label { font-size: 0.75rem; color: var(--muted); width: 100%; margin-bottom: 4px; }
-    .opt-btn {
-      background: #fff; border: 1px solid var(--border);
-      padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
-    }
-    .opt-btn.active { border-color: var(--primary); background: #ede9fe; color: var(--primary); }
-
-    /* Post individual */
-    .post-header {
-      padding: 14px 18px 0;
-      display: flex; align-items: center; gap: 10px;
-    }
+    /* Posts */
+    .post-header { padding: 14px 18px 0; display: flex; align-items: center; gap: 10px; }
     .post-meta { flex: 1; }
     .post-author { font-weight: 700; font-size: .92rem; }
     .post-time { font-size: .76rem; color: var(--muted); }
     .post-text { padding: 12px 18px; font-size: .93rem; line-height: 1.55; }
-    .post-counts {
-      padding: 8px 18px;
-      display: flex; justify-content: space-between;
-      font-size: .8rem; color: var(--muted);
-      border-bottom: 1px solid var(--border);
-    }
-    .post-actions {
-      display: flex; justify-content: space-around;
-      padding: 4px 8px;
-    }
+    .post-actions { display: flex; justify-content: space-around; padding: 4px 8px; border-top: 1px solid var(--border); }
     .action-btn {
       flex: 1; background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: .85rem;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      padding: 8px 4px; border-radius: 8px; transition: background .15s, color .15s;
-      font-family: inherit;
-    }
-    .action-btn:hover { background: var(--bg); }
-    .action-btn.liked { color: var(--accent); }
-
-    /* Comentários */
-    .comments-section {
-      border-top: 1px solid var(--border);
-      padding: 12px 18px;
-      display: none;
-      flex-direction: column; gap: 10px;
-    }
-    .comments-section.open { display: flex; }
-    .comment { display: flex; gap: 8px; align-items: flex-start; }
-    .comment-bubble {
-      background: var(--bg); border-radius: 10px;
-      padding: 8px 12px; font-size: .84rem; flex: 1;
-    }
-    .comment-author { font-weight: 700; font-size: .8rem; margin-bottom: 2px; }
-    .comment-input-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
-    .comment-input {
-      flex: 1; border: 1px solid var(--border); border-radius: 999px;
-      padding: 7px 14px; font-size: .84rem; outline: none;
-      font-family: inherit;
-    }
-    .comment-send {
-      background: var(--primary); color: #fff; border: none;
-      border-radius: 50%; width: 32px; height: 32px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: .85rem; padding: 8px 4px; border-radius: 8px;
     }
 
     /* ===== SIDEBAR DIREITA ===== */
@@ -265,8 +212,7 @@
     .btn-follow {
       background: none; border: 2px solid var(--primary);
       color: var(--primary); border-radius: 999px;
-      padding: 4px 14px; font-size: .78rem; font-weight: 600;
-      cursor: pointer;
+      padding: 4px 14px; font-size: .78rem; font-weight: 600; cursor: pointer;
     }
 
     /* ===== TOAST ===== */
@@ -274,9 +220,7 @@
       position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
       background: #1e293b; color: #fff; padding: 10px 22px;
       border-radius: 999px; font-size: .88rem;
-      opacity: 0; pointer-events: none;
-      transition: opacity .3s;
-      z-index: 300;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 300;
     }
     #toast.show { opacity: 1; }
   </style>
@@ -302,15 +246,18 @@
   <!-- ===== SIDEBAR ESQUERDA ===== -->
   <aside class="sidebar-left">
     <div class="card profile-card">
+      <button class="btn-customize-avatar" onclick="toggleCustomizePanel()" title="Personalizar Avatar">🎨</button>
       <div class="profile-cover"></div>
       <div class="profile-avatar-wrap" id="myAvatarLarge"></div>
       <div class="card-body" style="padding-top:8px;">
         <div class="profile-name">Ketrin Vitória</div>
-        <div class="profile-bio">✨ Personalizando meu avatar!</div>
-        
-        <!-- Personalização de Avatar -->
+        <div class="profile-bio">✨ Apaixonada por tecnologia!</div>
+      </div>
+
+      <!-- Painel de Personalização (Oculto por padrão) -->
+      <div class="customize-panel" id="customizePanel">
         <div class="avatar-selector">
-          <div class="selector-label">Escolha seu Animal:</div>
+          <div class="selector-label">Animal:</div>
           <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
           <button class="opt-btn" onclick="updateMyAvatar('animal', '🐶')">🐶</button>
           <button class="opt-btn" onclick="updateMyAvatar('animal', '🦊')">🦊</button>
@@ -318,26 +265,22 @@
           <button class="opt-btn" onclick="updateMyAvatar('animal', '🐨')">🐨</button>
           <button class="opt-btn" onclick="updateMyAvatar('animal', '🦁')">🦁</button>
 
-          <div class="selector-label">Escolha seu Acessório:</div>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">Nenhum</button>
+          <div class="selector-label">Acessório:</div>
+          <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">❌</button>
           <button class="opt-btn" onclick="updateMyAvatar('accessory', '🕶️')">🕶️</button>
           <button class="opt-btn" onclick="updateMyAvatar('accessory', '👑')">👑</button>
           <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎧')">🎧</button>
           <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎩')">🎩</button>
           <button class="opt-btn" onclick="updateMyAvatar('accessory', '✨')">✨</button>
 
-          <div class="selector-label">Cor de Fundo:</div>
+          <div class="selector-label">Cor:</div>
           <button class="opt-btn" onclick="updateMyAvatar('bg', '#fee2e2')">🔴</button>
           <button class="opt-btn" onclick="updateMyAvatar('bg', '#dcfce7')">🟢</button>
           <button class="opt-btn" onclick="updateMyAvatar('bg', '#dbeafe')">🔵</button>
           <button class="opt-btn" onclick="updateMyAvatar('bg', '#fef9c3')">🟡</button>
           <button class="opt-btn" onclick="updateMyAvatar('bg', '#f5f3ff')">🟣</button>
         </div>
-
-        <div class="profile-stats">
-          <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">Posts</div></div>
-          <div class="stat"><div class="stat-num">248</div><div class="stat-lbl">Seguidores</div></div>
-        </div>
+        <button class="btn-publish" style="width:100%;" onclick="toggleCustomizePanel()">Salvar e Fechar</button>
       </div>
     </div>
   </aside>
@@ -351,7 +294,7 @@
           <div id="myAvatarPost"></div>
           <textarea id="newPostText" placeholder="O que você está pensando?"></textarea>
         </div>
-        <div class="new-post-actions">
+        <div class="new-post-actions" style="display:flex; justify-content:flex-end;">
           <button class="btn-publish" onclick="publishPost()">Publicar</button>
         </div>
       </div>
@@ -372,10 +315,8 @@
 
 <script>
   /* ============================================================
-     CONFIGURAÇÃO DE AVATAR (SEM IMAGENS)
+     AVATAR LOGIC
   ============================================================ */
-  
-  // Função para gerar o HTML do avatar
   function createAvatarHTML(config, sizeClass = 'avatar-md') {
     return `
       <div class="avatar-box ${sizeClass}" style="background-color: ${config.bg || '#e2e8f0'}">
@@ -388,34 +329,29 @@
     `;
   }
 
-  let myAvatarConfig = {
-    animal: '🐱',
-    accessory: '🕶️',
-    bg: '#dbeafe',
-    initials: 'KV'
-  };
+  let myAvatarConfig = { animal: '🐱', accessory: '🕶️', bg: '#dbeafe', initials: 'KV' };
 
   const USERS = [
     { name: 'Lucas Mendes', avatar: { animal: '🐶', accessory: '🎧', bg: '#dcfce7' } },
     { name: 'Ana Paula',    avatar: { animal: '🦊', accessory: '✨', bg: '#fee2e2' } },
     { name: 'Rafael Costa', avatar: { animal: '🦁', accessory: '👑', bg: '#fef9c3' } },
-    { name: 'Juliana Souza',avatar: { animal: '🐨', accessory: '🎩', bg: '#f5f3ff' } },
   ];
 
   let posts = [
-    { id: 1, user: USERS[0], time: '2h atrás', text: 'Testando os novos avatares! 🐱🕶️ Ficou muito legal essa ideia de não usar fotos reais.', likes: 12, liked: false, comments: [] },
-    { id: 2, user: USERS[1], time: '5h atrás', text: 'Adorei meu avatar de raposinha com brilhos! ✨🦊', likes: 24, liked: false, comments: [] }
+    { id: 1, user: USERS[0], time: '2h atrás', text: 'Clique no ícone de paleta 🎨 no seu perfil para personalizar seu avatar!', likes: 12 },
+    { id: 2, user: USERS[1], time: '5h atrás', text: 'Amei essa nova função de personalização! ✨', likes: 24 }
   ];
 
-  /* ============================================================
-     LOGICA DE ATUALIZAÇÃO
-  ============================================================ */
+  function toggleCustomizePanel() {
+    const panel = document.getElementById('customizePanel');
+    panel.classList.toggle('active');
+  }
 
   function updateMyAvatar(type, value) {
     myAvatarConfig[type] = value;
     renderMyAvatars();
-    renderAllPosts(); // Atualiza avatares nos posts do usuário
-    showToast('Avatar atualizado!');
+    renderAllPosts();
+    showToast('Estilo atualizado! ✨');
   }
 
   function renderMyAvatars() {
@@ -431,7 +367,7 @@
         <div class="post-header">
           ${createAvatarHTML(userAvatar, 'avatar-md')}
           <div class="post-meta">
-            <div class="post-author">${post.user.name || 'Você'}</div>
+            <div class="post-author">${post.user.name || 'Ketrin Vitória'}</div>
             <div class="post-time">${post.time}</div>
           </div>
         </div>
@@ -456,9 +392,7 @@
     el.innerHTML = USERS.map(u => `
       <div class="suggestion-item">
         ${createAvatarHTML(u.avatar, 'avatar-sm')}
-        <div class="suggestion-info">
-          <div class="suggestion-name">${u.name}</div>
-        </div>
+        <div class="suggestion-info"><div class="suggestion-name">${u.name}</div></div>
         <button class="btn-follow" onclick="showToast('Seguindo!')">Seguir</button>
       </div>
     `).join('');
@@ -467,8 +401,7 @@
   function publishPost() {
     const txt = document.getElementById('newPostText');
     if (!txt.value.trim()) return;
-    const newP = { id: Date.now(), user: { name: 'Ketrin Vitória', avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0, comments: [] };
-    posts.unshift(newP);
+    posts.unshift({ id: Date.now(), user: { name: 'Ketrin Vitória', avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0 });
     txt.value = '';
     renderAllPosts();
     showToast('Postado!');
@@ -481,7 +414,6 @@
     setTimeout(() => el.classList.remove('show'), 2000);
   }
 
-  // Init
   renderMyAvatars();
   renderAllPosts();
   renderSuggestions();
