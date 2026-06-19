@@ -71,25 +71,14 @@
     }
     .avatar-emoji { font-size: 1.8em; z-index: 2; position: relative; margin-top: 10%; }
     
-    /* Acessório no TOPO da cabeça */
     .avatar-accessory {
-      position: absolute;
-      top: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.2em;
-      z-index: 5;
-      pointer-events: none;
+      position: absolute; top: 5%; left: 50%; transform: translateX(-50%);
+      font-size: 1.2em; z-index: 5; pointer-events: none;
     }
     
-    /* Expressão ao LADO */
     .avatar-expression {
-      position: absolute;
-      bottom: 15%;
-      right: 10%;
-      font-size: 0.9em;
-      z-index: 4;
-      pointer-events: none;
+      position: absolute; bottom: 15%; right: 10%;
+      font-size: 0.9em; z-index: 4; pointer-events: none;
     }
     
     .avatar-glow {
@@ -102,7 +91,6 @@
     .avatar-md { width: 52px; height: 52px; font-size: 18px; }
     .avatar-sm { width: 36px; height: 36px; font-size: 14px; }
 
-    /* Ajuste para Óculos (que devem ficar no rosto) */
     .avatar-accessory.face-item { top: 35%; font-size: 1em; }
 
     /* ===== LAYOUT ===== */
@@ -190,7 +178,6 @@
       color: var(--muted); font-size: .9rem; font-weight: 600; padding: 10px; border-radius: 10px;
       display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
     }
-    .action-btn:hover { background: #f1f5f9; color: var(--primary); }
 
     /* ===== SIDEBAR DIREITA ===== */
     .suggestion-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
@@ -234,27 +221,28 @@
       <div class="profile-avatar-wrap" id="myAvatarLarge"></div>
       <div class="card-body" style="padding-top:8px;">
         <div class="profile-name">Ketrin Vitória</div>
-        <div class="profile-bio">Ajustando o visual dos acessórios! 🎩👑</div>
+        <div class="profile-bio">Escolha entre animais, monstros ou fantasmas! 👻👾</div>
       </div>
 
       <div class="customize-panel" id="customizePanel">
         <div class="selector-group">
           <span class="selector-label">Personagem:</span>
           <div class="options-grid">
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '👻')">👻</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '👾')">👾</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🐶')">🐶</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🦊')">🦊</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🐼')">🐼</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐨')">🐨</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🦁')">🦁</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐸')">🐸</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🤖')">🤖</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '👽')">👽</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦄')">🦄</button>
           </div>
         </div>
 
         <div class="selector-group">
-          <span class="selector-label">Acessório (Topo da Cabeça):</span>
+          <span class="selector-label">Acessório (Topo):</span>
           <div class="options-grid">
             <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">❌</button>
             <button class="opt-btn" onclick="updateMyAvatar('accessory', '👑')">👑</button>
@@ -275,7 +263,6 @@
             <button class="opt-btn" onclick="updateMyAvatar('expression', '🔥')">🔥</button>
             <button class="opt-btn" onclick="updateMyAvatar('expression', '⭐')">⭐</button>
             <button class="opt-btn" onclick="updateMyAvatar('expression', '💭')">💭</button>
-            <button class="opt-btn" onclick="updateMyAvatar('expression', '🚀')">🚀</button>
           </div>
         </div>
 
@@ -285,7 +272,6 @@
             <button class="color-btn" style="background:#fee2e2" onclick="updateMyAvatar('bg', '#fee2e2')"></button>
             <button class="color-btn" style="background:#dcfce7" onclick="updateMyAvatar('bg', '#dcfce7')"></button>
             <button class="color-btn" style="background:#dbeafe" onclick="updateMyAvatar('bg', '#dbeafe')"></button>
-            <button class="color-btn" style="background:#fef9c3" onclick="updateMyAvatar('bg', '#fef9c3')"></button>
             <button class="color-btn" style="background:linear-gradient(45deg, #fbcfe8, #d8b4fe)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #fbcfe8, #d8b4fe)')"></button>
             <button class="color-btn" style="background:linear-gradient(45deg, #a5f3fc, #99f6e4)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #a5f3fc, #99f6e4)')"></button>
           </div>
@@ -319,7 +305,6 @@
 
 <script>
   function createAvatarHTML(config, sizeClass = 'avatar-md') {
-    // Detecta se é óculos para posicionar no rosto
     const isFaceItem = config.accessory === '🕶️';
     return `
       <div class="avatar-box ${sizeClass}" style="background: ${config.bg || '#e2e8f0'}">
@@ -333,15 +318,15 @@
     `;
   }
 
-  let myAvatarConfig = { animal: '🐱', accessory: '👑', expression: '✨', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
+  let myAvatarConfig = { animal: '👻', accessory: '👑', expression: '✨', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
 
   const USERS = [
-    { name: 'Lucas Mendes', avatar: { animal: '🐶', accessory: '🎧', expression: '🔥', bg: '#dcfce7' } },
+    { name: 'Lucas Mendes', avatar: { animal: '👾', accessory: '🎧', expression: '🔥', bg: '#dcfce7' } },
     { name: 'Ana Paula',    avatar: { animal: '🦊', accessory: '✨', expression: '❤️', bg: '#fee2e2' } },
   ];
 
   let posts = [
-    { id: 1, user: USERS[0], time: '2h atrás', text: 'Agora os chapéus e coroas ficam certinhos no topo! 🎩👑', likes: 15 },
+    { id: 1, user: USERS[0], time: '2h atrás', text: 'Os novos personagens de monstro e fantasma são demais! 👾👻', likes: 15 },
   ];
 
   function toggleCustomizePanel() { document.getElementById('customizePanel').classList.toggle('active'); }
@@ -350,7 +335,7 @@
     myAvatarConfig[type] = value;
     renderMyAvatars();
     renderAllPosts();
-    showToast('Visual ajustado! ✨');
+    showToast('Visual atualizado! ✨');
   }
 
   function renderMyAvatars() {
