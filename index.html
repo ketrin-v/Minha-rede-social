@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SocialNet — Sua Rede Social</title>
+  <title>SocialNet — Sua Rede Social (Texto)</title>
   <style>
     /* ===== RESET & VARIÁVEIS ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,10 +66,6 @@
       font-size: .85rem; cursor: pointer; transition: background .2s;
     }
     .nav-btn:hover { background: rgba(255,255,255,.28); }
-    .nav-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      object-fit: cover; border: 2px solid #a5b4fc; cursor: pointer;
-    }
 
     /* ===== LAYOUT ===== */
     .layout {
@@ -112,13 +108,15 @@
       height: 80px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
     }
-    .profile-avatar-wrap {
+    .profile-avatar-placeholder {
       margin-top: -36px;
       display: flex; justify-content: center;
     }
-    .profile-avatar {
+    .profile-initials {
       width: 72px; height: 72px; border-radius: 50%;
-      border: 3px solid #fff; object-fit: cover;
+      border: 3px solid #fff; background: var(--primary);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.5rem;
     }
     .profile-name { margin-top: 8px; font-weight: 700; font-size: 1rem; }
     .profile-bio { font-size: .82rem; color: var(--muted); margin: 4px 0 12px; }
@@ -153,8 +151,11 @@
     /* Caixa de nova publicação */
     .new-post-card .card-body { display: flex; flex-direction: column; gap: 12px; }
     .new-post-top { display: flex; gap: 10px; align-items: flex-start; }
-    .new-post-top img {
-      width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+    .user-initials-small {
+      width: 42px; height: 42px; border-radius: 50%; 
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem; flex-shrink: 0;
     }
     .new-post-top textarea {
       flex: 1; border: 1px solid var(--border); border-radius: 10px;
@@ -184,13 +185,9 @@
     .btn-publish:hover { background: var(--primary-dk); }
 
     /* Post individual */
-    .post-card {}
     .post-header {
       padding: 14px 18px 0;
       display: flex; align-items: center; gap: 10px;
-    }
-    .post-avatar {
-      width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
     }
     .post-meta { flex: 1; }
     .post-author { font-weight: 700; font-size: .92rem; }
@@ -202,11 +199,6 @@
     }
     .post-menu-btn:hover { background: var(--bg); }
     .post-text { padding: 12px 18px; font-size: .93rem; line-height: 1.55; }
-    .post-image {
-      width: 100%; max-height: 380px; object-fit: cover;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
     .post-counts {
       padding: 8px 18px;
       display: flex; justify-content: space-between;
@@ -239,9 +231,6 @@
     .comment {
       display: flex; gap: 8px; align-items: flex-start;
     }
-    .comment img {
-      width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
-    }
     .comment-bubble {
       background: var(--bg); border-radius: 10px;
       padding: 8px 12px; font-size: .84rem; flex: 1;
@@ -249,9 +238,6 @@
     .comment-author { font-weight: 700; font-size: .8rem; margin-bottom: 2px; }
     .comment-input-row {
       display: flex; gap: 8px; align-items: center; margin-top: 4px;
-    }
-    .comment-input-row img {
-      width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
     }
     .comment-input {
       flex: 1; border: 1px solid var(--border); border-radius: 999px;
@@ -275,9 +261,6 @@
       padding: 8px 0;
     }
     .suggestion-item:not(:last-child) { border-bottom: 1px solid var(--border); }
-    .suggestion-item img {
-      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
-    }
     .suggestion-info { flex: 1; }
     .suggestion-name { font-weight: 600; font-size: .88rem; }
     .suggestion-mutual { font-size: .75rem; color: var(--muted); }
@@ -298,73 +281,6 @@
     .trend-item:not(:last-child) { border-bottom: 1px solid var(--border); }
     .trend-tag { font-weight: 700; font-size: .88rem; color: var(--primary); }
     .trend-count { font-size: .76rem; color: var(--muted); }
-
-    /* ===== STORIES ===== */
-    .stories-row {
-      display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px;
-    }
-    .stories-row::-webkit-scrollbar { height: 4px; }
-    .stories-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    .story {
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      cursor: pointer; flex-shrink: 0;
-    }
-    .story-ring {
-      width: 56px; height: 56px; border-radius: 50%;
-      padding: 3px;
-      background: linear-gradient(135deg, var(--accent), var(--primary));
-    }
-    .story-ring img {
-      width: 100%; height: 100%; border-radius: 50%;
-      border: 2px solid #fff; object-fit: cover;
-    }
-    .story-name { font-size: .72rem; color: var(--muted); max-width: 60px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .story-add .story-ring {
-      background: var(--bg); border: 2px dashed var(--primary);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; color: var(--primary);
-    }
-
-    /* ===== MODAL DE STORY ===== */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.75); z-index: 200;
-      align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .story-modal {
-      background: #000; border-radius: 16px;
-      width: 340px; max-width: 95vw;
-      overflow: hidden; position: relative;
-    }
-    .story-modal img { width: 100%; height: 520px; object-fit: cover; }
-    .story-modal-info {
-      position: absolute; top: 0; left: 0; right: 0;
-      padding: 14px 16px;
-      background: linear-gradient(to bottom, rgba(0,0,0,.5), transparent);
-      display: flex; align-items: center; gap: 10px;
-    }
-    .story-modal-info img {
-      width: 36px; height: 36px; border-radius: 50%; border: 2px solid #fff;
-    }
-    .story-modal-name { color: #fff; font-weight: 700; font-size: .9rem; }
-    .story-modal-time { color: rgba(255,255,255,.7); font-size: .75rem; }
-    .story-close {
-      position: absolute; top: 12px; right: 12px;
-      background: rgba(0,0,0,.4); border: none; color: #fff;
-      border-radius: 50%; width: 30px; height: 30px;
-      font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .story-progress {
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: rgba(255,255,255,.3);
-    }
-    .story-progress-bar {
-      height: 100%; background: #fff;
-      animation: progress 5s linear forwards;
-    }
-    @keyframes progress { from { width: 0; } to { width: 100%; } }
 
     /* ===== TOAST ===== */
     #toast {
@@ -389,12 +305,12 @@
   <div class="nav-logo">Social<span>Net</span></div>
   <div class="nav-search">
     <span class="icon-search">🔍</span>
-    <input type="text" placeholder="Pesquisar pessoas, posts..." id="searchInput" />
+    <input type="text" placeholder="Pesquisar textos, posts..." id="searchInput" />
   </div>
   <div class="nav-actions">
     <button class="nav-btn" onclick="showToast('🔔 Nenhuma notificação nova')">🔔 Notificações</button>
     <button class="nav-btn" onclick="showToast('💬 Nenhuma mensagem nova')">💬 Mensagens</button>
-    <img class="nav-avatar" src="https://i.pravatar.cc/80?img=47" alt="Você" title="Meu perfil" />
+    <div class="user-initials-small" title="Meu perfil">KV</div>
   </div>
 </nav>
 
@@ -407,8 +323,8 @@
     <!-- Perfil -->
     <div class="card profile-card">
       <div class="profile-cover"></div>
-      <div class="profile-avatar-wrap">
-        <img class="profile-avatar" src="https://i.pravatar.cc/80?img=47" alt="Você" />
+      <div class="profile-avatar-placeholder">
+        <div class="profile-initials">KV</div>
       </div>
       <div class="card-body" style="padding-top:8px;">
         <div class="profile-name">Ketrin Vitória</div>
@@ -440,29 +356,16 @@
   <!-- ===== FEED CENTRAL ===== -->
   <main class="feed" id="feed">
 
-    <!-- Stories -->
-    <div class="card">
-      <div class="card-body">
-        <div class="stories-row" id="storiesRow">
-          <div class="story story-add" onclick="showToast('Adicionar story em breve!')">
-            <div class="story-ring"><span>＋</span></div>
-            <span class="story-name">Seu story</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Nova publicação -->
     <div class="card new-post-card">
       <div class="card-header">📝 Nova Publicação</div>
       <div class="card-body">
         <div class="new-post-top">
-          <img src="https://i.pravatar.cc/80?img=47" alt="Você" />
+          <div class="user-initials-small">KV</div>
           <textarea id="newPostText" placeholder="O que você está pensando, Ketrin?"></textarea>
         </div>
         <div class="new-post-actions">
           <div class="post-tools">
-            <button class="tool-btn" onclick="showToast('Foto/vídeo: em breve!')">📷 Foto/Vídeo</button>
             <button class="tool-btn" onclick="showToast('Sentimento: em breve!')">😊 Sentimento</button>
             <button class="tool-btn" onclick="showToast('Local: em breve!')">📍 Local</button>
           </div>
@@ -494,22 +397,6 @@
 
 </div>
 
-<!-- ===== MODAL STORY ===== -->
-<div class="modal-overlay" id="storyModal" onclick="closeStory(event)">
-  <div class="story-modal" id="storyModalBox">
-    <div class="story-progress"><div class="story-progress-bar" id="storyBar"></div></div>
-    <img id="storyImg" src="" alt="Story" />
-    <div class="story-modal-info">
-      <img id="storyAvatar" src="" alt="" />
-      <div>
-        <div class="story-modal-name" id="storyName"></div>
-        <div class="story-modal-time">Agora mesmo</div>
-      </div>
-    </div>
-    <button class="story-close" onclick="document.getElementById('storyModal').classList.remove('open')">✕</button>
-  </div>
-</div>
-
 <!-- ===== TOAST ===== -->
 <div id="toast"></div>
 
@@ -519,23 +406,16 @@
   ============================================================ */
   const ME = {
     name: 'Ketrin Vitória',
-    avatar: 'https://i.pravatar.cc/80?img=47'
+    initials: 'KV'
   };
 
   const USERS = [
-    { id: 1,  name: 'Lucas Mendes',   avatar: 'https://i.pravatar.cc/80?img=12' },
-    { id: 2,  name: 'Ana Paula',      avatar: 'https://i.pravatar.cc/80?img=5'  },
-    { id: 3,  name: 'Rafael Costa',   avatar: 'https://i.pravatar.cc/80?img=33' },
-    { id: 4,  name: 'Juliana Souza',  avatar: 'https://i.pravatar.cc/80?img=9'  },
-    { id: 5,  name: 'Pedro Alves',    avatar: 'https://i.pravatar.cc/80?img=15' },
-    { id: 6,  name: 'Mariana Lima',   avatar: 'https://i.pravatar.cc/80?img=20' },
-  ];
-
-  const STORIES_DATA = [
-    { user: USERS[0], img: 'https://picsum.photos/seed/s1/400/600' },
-    { user: USERS[1], img: 'https://picsum.photos/seed/s2/400/600' },
-    { user: USERS[2], img: 'https://picsum.photos/seed/s3/400/600' },
-    { user: USERS[3], img: 'https://picsum.photos/seed/s4/400/600' },
+    { id: 1,  name: 'Lucas Mendes',   initials: 'LM' },
+    { id: 2,  name: 'Ana Paula',      initials: 'AP'  },
+    { id: 3,  name: 'Rafael Costa',   initials: 'RC' },
+    { id: 4,  name: 'Juliana Souza',  initials: 'JS'  },
+    { id: 5,  name: 'Pedro Alves',    initials: 'PA' },
+    { id: 6,  name: 'Mariana Lima',   initials: 'ML' },
   ];
 
   let posts = [
@@ -544,7 +424,6 @@
       user: USERS[0],
       time: '2 horas atrás',
       text: 'Acabei de terminar meu projeto de TCC! 🎉 Foram meses de trabalho duro, mas valeu cada segundo. Obrigado a todos que me apoiaram nessa jornada! #TCC #Formatura',
-      image: 'https://picsum.photos/seed/post1/700/400',
       likes: 42,
       liked: false,
       comments: [
@@ -557,7 +436,6 @@
       user: USERS[1],
       time: '4 horas atrás',
       text: 'Bom dia, pessoal! ☀️ Começando a semana com energia e muita gratidão. Que tal compartilhar algo positivo hoje? 💛',
-      image: null,
       likes: 87,
       liked: false,
       comments: [
@@ -569,7 +447,6 @@
       user: USERS[2],
       time: '1 dia atrás',
       text: 'Visitei o Jardim Botânico hoje e fiquei encantado com tanta beleza natural 🌿🌸 A natureza é incrível!',
-      image: 'https://picsum.photos/seed/post3/700/400',
       likes: 134,
       liked: false,
       comments: []
@@ -594,18 +471,10 @@
      RENDERIZAÇÃO
   ============================================================ */
 
-  function timeAgo(date) {
-    const diff = Math.floor((Date.now() - date) / 1000);
-    if (diff < 60)  return 'agora mesmo';
-    if (diff < 3600) return Math.floor(diff/60) + ' min atrás';
-    if (diff < 86400) return Math.floor(diff/3600) + ' h atrás';
-    return Math.floor(diff/86400) + ' d atrás';
-  }
-
   function renderPost(post) {
     const commentsHTML = post.comments.map(c => `
       <div class="comment">
-        <img src="${c.user.avatar}" alt="${c.user.name}" />
+        <div class="user-initials-small" style="width:32px; height:32px; font-size:0.8rem;">${c.user.initials || 'U'}</div>
         <div class="comment-bubble">
           <div class="comment-author">${c.user.name}</div>
           ${c.text}
@@ -616,7 +485,7 @@
     return `
       <div class="card post-card" id="post-${post.id}">
         <div class="post-header">
-          <img class="post-avatar" src="${post.user.avatar}" alt="${post.user.name}" />
+          <div class="user-initials-small">${post.user.initials}</div>
           <div class="post-meta">
             <div class="post-author">${post.user.name}</div>
             <div class="post-time">${post.time}</div>
@@ -624,7 +493,6 @@
           <button class="post-menu-btn" onclick="showToast('Opções em breve!')">⋯</button>
         </div>
         <div class="post-text">${post.text}</div>
-        ${post.image ? `<img class="post-image" src="${post.image}" alt="Post" loading="lazy" />` : ''}
         <div class="post-counts">
           <span id="like-count-${post.id}">${post.likes} curtidas</span>
           <span onclick="toggleComments(${post.id})" style="cursor:pointer">${post.comments.length} comentário${post.comments.length !== 1 ? 's' : ''}</span>
@@ -643,7 +511,7 @@
         <div class="comments-section" id="comments-${post.id}">
           <div id="comments-list-${post.id}">${commentsHTML}</div>
           <div class="comment-input-row">
-            <img src="${ME.avatar}" alt="Você" />
+            <div class="user-initials-small" style="width:32px; height:32px; font-size:0.8rem;">${ME.initials}</div>
             <input class="comment-input" id="comment-input-${post.id}" type="text" placeholder="Escreva um comentário..." onkeydown="if(event.key==='Enter') addComment(${post.id})" />
             <button class="comment-send" onclick="addComment(${post.id})">➤</button>
           </div>
@@ -654,7 +522,6 @@
 
   function renderAllPosts() {
     const feed = document.getElementById('feed');
-    // Remove posts antigos (mantém stories e new-post)
     const oldPosts = feed.querySelectorAll('.post-card');
     oldPosts.forEach(p => p.remove());
 
@@ -663,23 +530,11 @@
     });
   }
 
-  function renderStories() {
-    const row = document.getElementById('storiesRow');
-    STORIES_DATA.forEach((s, i) => {
-      row.insertAdjacentHTML('beforeend', `
-        <div class="story" onclick="openStory(${i})">
-          <div class="story-ring"><img src="${s.user.avatar}" alt="${s.user.name}" /></div>
-          <span class="story-name">${s.user.name.split(' ')[0]}</span>
-        </div>
-      `);
-    });
-  }
-
   function renderSuggestions() {
     const el = document.getElementById('suggestions');
     el.innerHTML = SUGGESTIONS.map((s, i) => `
       <div class="suggestion-item">
-        <img src="${s.user.avatar}" alt="${s.user.name}" />
+        <div class="user-initials-small" style="width:40px; height:40px;">${s.user.initials}</div>
         <div class="suggestion-info">
           <div class="suggestion-name">${s.user.name}</div>
           <div class="suggestion-mutual">${s.mutual}</div>
@@ -728,12 +583,12 @@
     if (!text) return;
 
     const post = posts.find(p => p.id === id);
-    post.comments.push({ user: { name: ME.name, avatar: ME.avatar }, text });
+    post.comments.push({ user: { name: ME.name, initials: ME.initials }, text });
 
     const list = document.getElementById(`comments-list-${id}`);
     list.insertAdjacentHTML('beforeend', `
       <div class="comment">
-        <img src="${ME.avatar}" alt="${ME.name}" />
+        <div class="user-initials-small" style="width:32px; height:32px; font-size:0.8rem;">${ME.initials}</div>
         <div class="comment-bubble">
           <div class="comment-author">${ME.name}</div>
           ${text}
@@ -741,7 +596,6 @@
       </div>
     `);
 
-    // Atualiza contagem
     const countEl = document.getElementById(`post-${id}`).querySelector('.post-counts span:last-child');
     countEl.textContent = `${post.comments.length} comentário${post.comments.length !== 1 ? 's' : ''}`;
 
@@ -756,10 +610,9 @@
 
     const newPost = {
       id: Date.now(),
-      user: { name: ME.name, avatar: ME.avatar },
+      user: { name: ME.name, initials: ME.initials },
       time: 'agora mesmo',
       text,
-      image: null,
       likes: 0,
       liked: false,
       comments: []
@@ -768,11 +621,9 @@
     posts.unshift(newPost);
     textarea.value = '';
 
-    // Insere após o card de nova publicação
     const newPostCard = document.querySelector('.new-post-card');
     newPostCard.insertAdjacentHTML('afterend', renderPost(newPost));
 
-    // Atualiza contador de posts
     const countEl = document.getElementById('postCount');
     countEl.textContent = parseInt(countEl.textContent) + 1;
 
@@ -788,37 +639,6 @@
     const isFollowing = btn.classList.toggle('following');
     btn.textContent = isFollowing ? 'Seguindo ✓' : 'Seguir';
     showToast(isFollowing ? `✅ Você está seguindo ${SUGGESTIONS[i].user.name}!` : `❌ Você deixou de seguir ${SUGGESTIONS[i].user.name}`);
-  }
-
-  /* ============================================================
-     STORIES
-  ============================================================ */
-  let storyTimer = null;
-
-  function openStory(i) {
-    const s = STORIES_DATA[i];
-    document.getElementById('storyImg').src = s.img;
-    document.getElementById('storyAvatar').src = s.user.avatar;
-    document.getElementById('storyName').textContent = s.user.name;
-    document.getElementById('storyModal').classList.add('open');
-
-    // Reinicia barra de progresso
-    const bar = document.getElementById('storyBar');
-    bar.style.animation = 'none';
-    bar.offsetHeight; // reflow
-    bar.style.animation = '';
-
-    clearTimeout(storyTimer);
-    storyTimer = setTimeout(() => {
-      document.getElementById('storyModal').classList.remove('open');
-    }, 5000);
-  }
-
-  function closeStory(e) {
-    if (e.target === document.getElementById('storyModal')) {
-      document.getElementById('storyModal').classList.remove('open');
-      clearTimeout(storyTimer);
-    }
   }
 
   /* ============================================================
@@ -855,7 +675,6 @@
   /* ============================================================
      INIT
   ============================================================ */
-  renderStories();
   renderAllPosts();
   renderSuggestions();
   renderTrending();
