@@ -17,8 +17,8 @@
       --text:       #1e293b;
       --muted:      #64748b;
       --border:     #e2e8f0;
-      --radius:     12px;
-      --shadow:     0 2px 12px rgba(0,0,0,.08);
+      --radius:     16px;
+      --shadow:     0 4px 20px rgba(0,0,0,.06);
       --nav-h:      60px;
     }
 
@@ -39,15 +39,9 @@
       box-shadow: 0 2px 8px rgba(0,0,0,.2);
       z-index: 100;
     }
-    .nav-logo {
-      font-size: 1.4rem; font-weight: 800; color: #fff;
-      letter-spacing: -0.5px;
-    }
+    .nav-logo { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
     .nav-logo span { color: #a5b4fc; }
-    .nav-search {
-      flex: 1; max-width: 360px; margin: 0 24px;
-      position: relative;
-    }
+    .nav-search { flex: 1; max-width: 360px; margin: 0 24px; position: relative; }
     .nav-search input {
       width: 100%; padding: 8px 16px 8px 40px;
       border-radius: 999px; border: none;
@@ -55,179 +49,151 @@
       font-size: .9rem; outline: none;
     }
     .nav-search input::placeholder { color: rgba(255,255,255,.7); }
-    .nav-search .icon-search {
-      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-      color: rgba(255,255,255,.7); font-size: 1rem;
-    }
+    .nav-search .icon-search { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,.7); }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
     .nav-btn {
       background: rgba(255,255,255,.15); border: none; color: #fff;
-      border-radius: 999px; padding: 6px 16px;
-      font-size: .85rem; cursor: pointer; transition: background .2s;
+      border-radius: 999px; padding: 6px 12px; font-size: 1rem; cursor: pointer;
     }
-    .nav-btn:hover { background: rgba(255,255,255,.28); }
 
     /* ===== AVATAR SYSTEM ===== */
     .avatar-box {
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       position: relative; overflow: hidden;
-      flex-shrink: 0;
-      user-select: none;
+      flex-shrink: 0; user-select: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .avatar-bg-circle {
       width: 100%; height: 100%;
-      background: #e2e8f0;
       display: flex; align-items: center; justify-content: center;
       font-weight: 700;
     }
-    .avatar-emoji { font-size: 1.8em; z-index: 2; }
-    .avatar-accessory {
-      position: absolute; top: 5%; right: 5%;
-      font-size: 0.9em; z-index: 3;
-    }
-    .avatar-shape {
+    .avatar-emoji { font-size: 1.8em; z-index: 2; position: relative; }
+    .avatar-accessory { position: absolute; top: 0%; right: 0%; font-size: 1.1em; z-index: 3; }
+    .avatar-expression { position: absolute; bottom: 10%; font-size: 0.8em; z-index: 4; }
+    .avatar-glow {
       position: absolute; inset: 0;
-      opacity: 0.2; z-index: 1;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+      z-index: 1; opacity: 0.5;
     }
 
-    .avatar-xl { width: 72px; height: 72px; font-size: 24px; }
-    .avatar-md { width: 44px; height: 44px; font-size: 16px; }
-    .avatar-sm { width: 32px; height: 32px; font-size: 12px; }
+    .avatar-xl { width: 80px; height: 80px; font-size: 28px; border: 4px solid #fff; box-shadow: var(--shadow); }
+    .avatar-md { width: 48px; height: 48px; font-size: 18px; }
+    .avatar-sm { width: 36px; height: 36px; font-size: 14px; }
 
     /* ===== LAYOUT ===== */
     .layout {
       display: grid;
-      grid-template-columns: 260px 1fr 280px;
+      grid-template-columns: 280px 1fr 280px;
       gap: 20px;
       max-width: 1200px;
       margin: calc(var(--nav-h) + 20px) auto 40px;
       padding: 0 16px;
     }
-    @media (max-width: 1024px) {
-      .layout { grid-template-columns: 220px 1fr; }
-      .sidebar-right { display: none; }
-    }
-    @media (max-width: 680px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar-left { display: none; }
-    }
+    @media (max-width: 1024px) { .layout { grid-template-columns: 240px 1fr; } .sidebar-right { display: none; } }
+    @media (max-width: 680px) { .layout { grid-template-columns: 1fr; } .sidebar-left { display: none; } }
 
     /* ===== CARDS ===== */
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .card-header {
-      padding: 14px 18px;
-      font-weight: 700; font-size: .95rem;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .card-body { padding: 16px 18px; }
+    .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+    .card-header { padding: 16px 20px; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-body { padding: 20px; }
 
     /* ===== SIDEBAR ESQUERDA ===== */
-    .sidebar-left { display: flex; flex-direction: column; gap: 16px; }
     .profile-card { text-align: center; position: relative; }
-    .profile-cover {
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-    }
-    .profile-avatar-wrap {
-      margin-top: -36px;
-      display: flex; justify-content: center;
-    }
+    .profile-cover { height: 90px; background: linear-gradient(135deg, var(--primary), var(--accent)); }
+    .profile-avatar-wrap { margin-top: -40px; display: flex; justify-content: center; }
     
-    /* Botão de Personalizar */
     .btn-customize-avatar {
-      position: absolute; top: 10px; right: 10px;
-      background: rgba(255,255,255,0.2); border: none;
-      width: 32px; height: 32px; border-radius: 50%;
-      color: #fff; cursor: pointer; font-size: 1.1rem;
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,0.25); border: none;
+      width: 36px; height: 36px; border-radius: 50%;
+      color: #fff; cursor: pointer; font-size: 1.2rem;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s;
-      z-index: 10;
+      transition: all 0.2s; z-index: 10;
     }
-    .btn-customize-avatar:hover { background: rgba(255,255,255,0.4); transform: rotate(15deg); }
+    .btn-customize-avatar:hover { background: rgba(255,255,255,0.4); transform: scale(1.1) rotate(15deg); }
 
-    .profile-name { margin-top: 8px; font-weight: 700; font-size: 1rem; }
-    .profile-bio { font-size: .82rem; color: var(--muted); margin: 4px 0 12px; }
+    .profile-name { margin-top: 10px; font-weight: 700; font-size: 1.1rem; }
+    .profile-bio { font-size: .85rem; color: var(--muted); margin: 6px 0 16px; padding: 0 10px; }
 
-    /* Painel de Personalização */
+    /* Painel de Personalização Expandido */
     .customize-panel {
-      display: none;
-      background: #f8fafc; border-top: 1px solid var(--border);
-      padding: 16px; text-align: left;
-      animation: slideDown 0.3s ease-out;
+      display: none; background: #f8fafc; border-top: 1px solid var(--border);
+      padding: 20px; text-align: left; animation: slideDown 0.3s ease-out;
+      max-height: 500px; overflow-y: auto;
     }
     .customize-panel.active { display: block; }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .avatar-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-    .selector-label { font-size: 0.7rem; color: var(--muted); width: 100%; margin-bottom: 4px; font-weight: 700; text-transform: uppercase; }
+    .selector-group { margin-bottom: 16px; }
+    .selector-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: block; }
+    .options-grid { display: flex; gap: 8px; flex-wrap: wrap; }
     .opt-btn {
-      background: #fff; border: 1px solid var(--border);
-      padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
-      transition: all 0.2s;
+      background: #fff; border: 2px solid var(--border);
+      width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
-    .opt-btn:hover { border-color: var(--primary); }
-    .opt-btn.active { border-color: var(--primary); background: #ede9fe; color: var(--primary); }
+    .opt-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .opt-btn.active { border-color: var(--primary); background: #ede9fe; transform: scale(0.95); }
+    .color-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border); cursor: pointer; }
+    .color-btn.active { box-shadow: 0 0 0 2px var(--primary); }
 
     /* ===== FEED ===== */
-    .feed { display: flex; flex-direction: column; gap: 16px; }
-    .new-post-card .card-body { display: flex; flex-direction: column; gap: 12px; }
-    .new-post-top { display: flex; gap: 10px; align-items: flex-start; }
+    .feed { display: flex; flex-direction: column; }
+    .new-post-card .card-body { display: flex; flex-direction: column; gap: 15px; }
+    .new-post-top { display: flex; gap: 12px; align-items: flex-start; }
     .new-post-top textarea {
-      flex: 1; border: 1px solid var(--border); border-radius: 10px;
-      padding: 10px 14px; font-size: .9rem; resize: none;
-      font-family: inherit; outline: none; min-height: 72px;
+      flex: 1; border: 2px solid var(--border); border-radius: 12px;
+      padding: 12px 16px; font-size: .95rem; resize: none;
+      font-family: inherit; outline: none; min-height: 80px; transition: border-color 0.2s;
     }
+    .new-post-top textarea:focus { border-color: var(--primary); }
     .btn-publish {
-      background: var(--primary); color: #fff;
-      border: none; border-radius: 999px;
-      padding: 8px 22px; font-size: .88rem; font-weight: 600;
-      cursor: pointer; align-self: flex-end;
+      background: var(--primary); color: #fff; border: none; border-radius: 999px;
+      padding: 10px 28px; font-size: .9rem; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; align-self: flex-end;
     }
+    .btn-publish:hover { background: var(--primary-dk); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
 
     /* Posts */
-    .post-header { padding: 14px 18px 0; display: flex; align-items: center; gap: 10px; }
+    .post-card { border: none; }
+    .post-header { padding: 16px 20px 0; display: flex; align-items: center; gap: 12px; }
     .post-meta { flex: 1; }
-    .post-author { font-weight: 700; font-size: .92rem; }
-    .post-time { font-size: .76rem; color: var(--muted); }
-    .post-text { padding: 12px 18px; font-size: .93rem; line-height: 1.55; }
-    .post-actions { display: flex; justify-content: space-around; padding: 4px 8px; border-top: 1px solid var(--border); }
+    .post-author { font-weight: 700; font-size: 1rem; color: var(--text); }
+    .post-time { font-size: .8rem; color: var(--muted); }
+    .post-text { padding: 15px 20px; font-size: 1rem; line-height: 1.6; color: #334155; }
+    .post-actions { display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid var(--border); background: #fafafa; }
     .action-btn {
       flex: 1; background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: .85rem; padding: 8px 4px; border-radius: 8px;
+      color: var(--muted); font-size: .9rem; font-weight: 600; padding: 10px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
     }
+    .action-btn:hover { background: #f1f5f9; color: var(--primary); }
 
     /* ===== SIDEBAR DIREITA ===== */
-    .sidebar-right { display: flex; flex-direction: column; gap: 16px; }
-    .suggestion-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
-    .suggestion-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+    .suggestion-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
     .suggestion-info { flex: 1; }
-    .suggestion-name { font-weight: 600; font-size: .88rem; }
+    .suggestion-name { font-weight: 700; font-size: .9rem; }
     .btn-follow {
-      background: none; border: 2px solid var(--primary);
-      color: var(--primary); border-radius: 999px;
-      padding: 4px 14px; font-size: .78rem; font-weight: 600; cursor: pointer;
+      background: #f1f5f9; border: none; color: var(--primary); border-radius: 8px;
+      padding: 6px 14px; font-size: .8rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
     }
+    .btn-follow:hover { background: var(--primary); color: #fff; }
 
     /* ===== TOAST ===== */
     #toast {
-      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-      background: #1e293b; color: #fff; padding: 10px 22px;
-      border-radius: 999px; font-size: .88rem;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 300;
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      background: #1e293b; color: #fff; padding: 12px 24px;
+      border-radius: 12px; font-size: .9rem; font-weight: 600;
+      opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-    #toast.show { opacity: 1; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
   </style>
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
 <nav>
   <div class="nav-logo">Social<span>Net</span></div>
   <div class="nav-search">
@@ -240,10 +206,7 @@
   </div>
 </nav>
 
-<!-- ===== LAYOUT PRINCIPAL ===== -->
 <div class="layout">
-
-  <!-- ===== SIDEBAR ESQUERDA ===== -->
   <aside class="sidebar-left">
     <div class="card profile-card">
       <button class="btn-customize-avatar" onclick="toggleCustomizePanel()" title="Personalizar Avatar">🎨</button>
@@ -251,107 +214,131 @@
       <div class="profile-avatar-wrap" id="myAvatarLarge"></div>
       <div class="card-body" style="padding-top:8px;">
         <div class="profile-name">Ketrin Vitória</div>
-        <div class="profile-bio">✨ Apaixonada por tecnologia!</div>
+        <div class="profile-bio">Personalize seu avatar clicando na paleta! ✨</div>
       </div>
 
-      <!-- Painel de Personalização (Oculto por padrão) -->
       <div class="customize-panel" id="customizePanel">
-        <div class="avatar-selector">
-          <div class="selector-label">Animal:</div>
-          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
-          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐶')">🐶</button>
-          <button class="opt-btn" onclick="updateMyAvatar('animal', '🦊')">🦊</button>
-          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐼')">🐼</button>
-          <button class="opt-btn" onclick="updateMyAvatar('animal', '🐨')">🐨</button>
-          <button class="opt-btn" onclick="updateMyAvatar('animal', '🦁')">🦁</button>
-
-          <div class="selector-label">Acessório:</div>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">❌</button>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '🕶️')">🕶️</button>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '👑')">👑</button>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎧')">🎧</button>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎩')">🎩</button>
-          <button class="opt-btn" onclick="updateMyAvatar('accessory', '✨')">✨</button>
-
-          <div class="selector-label">Cor:</div>
-          <button class="opt-btn" onclick="updateMyAvatar('bg', '#fee2e2')">🔴</button>
-          <button class="opt-btn" onclick="updateMyAvatar('bg', '#dcfce7')">🟢</button>
-          <button class="opt-btn" onclick="updateMyAvatar('bg', '#dbeafe')">🔵</button>
-          <button class="opt-btn" onclick="updateMyAvatar('bg', '#fef9c3')">🟡</button>
-          <button class="opt-btn" onclick="updateMyAvatar('bg', '#f5f3ff')">🟣</button>
+        <div class="selector-group">
+          <span class="selector-label">Escolha seu Personagem:</span>
+          <div class="options-grid">
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐶')">🐶</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦊')">🦊</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐼')">🐼</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐨')">🐨</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦁')">🦁</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐯')">🐯</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐸')">🐸</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐵')">🐵</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦄')">🦄</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '🤖')">🤖</button>
+            <button class="opt-btn" onclick="updateMyAvatar('animal', '👽')">👽</button>
+          </div>
         </div>
-        <button class="btn-publish" style="width:100%;" onclick="toggleCustomizePanel()">Salvar e Fechar</button>
+
+        <div class="selector-group">
+          <span class="selector-label">Expressão/Humor:</span>
+          <div class="options-grid">
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '')">😶</button>
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '❤️')">❤️</button>
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '🔥')">🔥</button>
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '⭐')">⭐</button>
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '💭')">💭</button>
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '💤')">💤</button>
+            <button class="opt-btn" onclick="updateMyAvatar('expression', '💢')">💢</button>
+          </div>
+        </div>
+
+        <div class="selector-group">
+          <span class="selector-label">Acessório:</span>
+          <div class="options-grid">
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">❌</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🕶️')">🕶️</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '👑')">👑</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎧')">🎧</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎩')">🎩</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '✨')">✨</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎀')">🎀</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎓')">🎓</button>
+            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🚀')">🚀</button>
+          </div>
+        </div>
+
+        <div class="selector-group">
+          <span class="selector-label">Cor de Fundo:</span>
+          <div class="options-grid">
+            <button class="color-btn" style="background:#fee2e2" onclick="updateMyAvatar('bg', '#fee2e2')"></button>
+            <button class="color-btn" style="background:#dcfce7" onclick="updateMyAvatar('bg', '#dcfce7')"></button>
+            <button class="color-btn" style="background:#dbeafe" onclick="updateMyAvatar('bg', '#dbeafe')"></button>
+            <button class="color-btn" style="background:#fef9c3" onclick="updateMyAvatar('bg', '#fef9c3')"></button>
+            <button class="color-btn" style="background:#f5f3ff" onclick="updateMyAvatar('bg', '#f5f3ff')"></button>
+            <button class="color-btn" style="background:#ffedd5" onclick="updateMyAvatar('bg', '#ffedd5')"></button>
+            <button class="color-btn" style="background:linear-gradient(45deg, #fbcfe8, #d8b4fe)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #fbcfe8, #d8b4fe)')"></button>
+            <button class="color-btn" style="background:linear-gradient(45deg, #a5f3fc, #99f6e4)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #a5f3fc, #99f6e4)')"></button>
+            <button class="color-btn" style="background:linear-gradient(45deg, #fde68a, #fca5a5)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #fde68a, #fca5a5)')"></button>
+          </div>
+        </div>
+        <button class="btn-publish" style="width:100%; margin-top:10px;" onclick="toggleCustomizePanel()">Pronto!</button>
       </div>
     </div>
   </aside>
 
-  <!-- ===== FEED CENTRAL ===== -->
   <main class="feed" id="feed">
     <div class="card new-post-card">
-      <div class="card-header">📝 Nova Publicação</div>
       <div class="card-body">
         <div class="new-post-top">
           <div id="myAvatarPost"></div>
-          <textarea id="newPostText" placeholder="O que você está pensando?"></textarea>
+          <textarea id="newPostText" placeholder="No que você está pensando agora?"></textarea>
         </div>
-        <div class="new-post-actions" style="display:flex; justify-content:flex-end;">
-          <button class="btn-publish" onclick="publishPost()">Publicar</button>
-        </div>
+        <button class="btn-publish" onclick="publishPost()">Publicar</button>
       </div>
     </div>
   </main>
 
-  <!-- ===== SIDEBAR DIREITA ===== -->
   <aside class="sidebar-right">
     <div class="card">
-      <div class="card-header">👤 Sugestões</div>
+      <div class="card-header">👥 Pessoas Sugeridas</div>
       <div class="card-body" id="suggestions"></div>
     </div>
   </aside>
-
 </div>
 
 <div id="toast"></div>
 
 <script>
-  /* ============================================================
-     AVATAR LOGIC
-  ============================================================ */
   function createAvatarHTML(config, sizeClass = 'avatar-md') {
     return `
-      <div class="avatar-box ${sizeClass}" style="background-color: ${config.bg || '#e2e8f0'}">
+      <div class="avatar-box ${sizeClass}" style="background: ${config.bg || '#e2e8f0'}">
         <div class="avatar-bg-circle">
-          ${config.animal ? `<span class="avatar-emoji">${config.animal}</span>` : `<span style="color:var(--primary)">${config.initials || '?'}</span>`}
+          <span class="avatar-emoji">${config.animal || '👤'}</span>
         </div>
         ${config.accessory ? `<span class="avatar-accessory">${config.accessory}</span>` : ''}
-        <div class="avatar-shape" style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);"></div>
+        ${config.expression ? `<span class="avatar-expression">${config.expression}</span>` : ''}
+        <div class="avatar-glow"></div>
       </div>
     `;
   }
 
-  let myAvatarConfig = { animal: '🐱', accessory: '🕶️', bg: '#dbeafe', initials: 'KV' };
+  let myAvatarConfig = { animal: '🐱', accessory: '🕶️', expression: '✨', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
 
   const USERS = [
-    { name: 'Lucas Mendes', avatar: { animal: '🐶', accessory: '🎧', bg: '#dcfce7' } },
-    { name: 'Ana Paula',    avatar: { animal: '🦊', accessory: '✨', bg: '#fee2e2' } },
-    { name: 'Rafael Costa', avatar: { animal: '🦁', accessory: '👑', bg: '#fef9c3' } },
+    { name: 'Lucas Mendes', avatar: { animal: '🐶', accessory: '🎧', expression: '🔥', bg: '#dcfce7' } },
+    { name: 'Ana Paula',    avatar: { animal: '🦊', accessory: '✨', expression: '❤️', bg: '#fee2e2' } },
+    { name: 'Rafael Costa', avatar: { animal: '🤖', accessory: '🚀', expression: '⭐', bg: '#dbeafe' } },
   ];
 
   let posts = [
-    { id: 1, user: USERS[0], time: '2h atrás', text: 'Clique no ícone de paleta 🎨 no seu perfil para personalizar seu avatar!', likes: 12 },
-    { id: 2, user: USERS[1], time: '5h atrás', text: 'Amei essa nova função de personalização! ✨', likes: 24 }
+    { id: 1, user: USERS[0], time: '2h atrás', text: 'Nossa, as novas opções de fundo gradiente ficaram incríveis! 😍', likes: 15 },
+    { id: 2, user: USERS[2], time: '4h atrás', text: 'Agora sou um robô espacial! 🤖🚀', likes: 42 }
   ];
 
-  function toggleCustomizePanel() {
-    const panel = document.getElementById('customizePanel');
-    panel.classList.toggle('active');
-  }
+  function toggleCustomizePanel() { document.getElementById('customizePanel').classList.toggle('active'); }
 
   function updateMyAvatar(type, value) {
     myAvatarConfig[type] = value;
     renderMyAvatars();
     renderAllPosts();
-    showToast('Estilo atualizado! ✨');
+    showToast('Estilo atualizado com sucesso! ✨');
   }
 
   function renderMyAvatars() {
@@ -373,8 +360,8 @@
         </div>
         <div class="post-text">${post.text}</div>
         <div class="post-actions">
-          <button class="action-btn" onclick="showToast('Curtiu!')">❤️ Curtir (${post.likes})</button>
-          <button class="action-btn" onclick="showToast('Comentários em breve')">💬 Comentar</button>
+          <button class="action-btn" onclick="showToast('Você curtiu!')">❤️ Curtir (${post.likes})</button>
+          <button class="action-btn" onclick="showToast('Comentários em breve!')">💬 Comentar</button>
         </div>
       </div>
     `;
@@ -382,14 +369,12 @@
 
   function renderAllPosts() {
     const feed = document.getElementById('feed');
-    const oldPosts = feed.querySelectorAll('.post-card');
-    oldPosts.forEach(p => p.remove());
+    feed.querySelectorAll('.post-card').forEach(p => p.remove());
     posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
   }
 
   function renderSuggestions() {
-    const el = document.getElementById('suggestions');
-    el.innerHTML = USERS.map(u => `
+    document.getElementById('suggestions').innerHTML = USERS.map(u => `
       <div class="suggestion-item">
         ${createAvatarHTML(u.avatar, 'avatar-sm')}
         <div class="suggestion-info"><div class="suggestion-name">${u.name}</div></div>
@@ -404,14 +389,14 @@
     posts.unshift({ id: Date.now(), user: { name: 'Ketrin Vitória', avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0 });
     txt.value = '';
     renderAllPosts();
-    showToast('Postado!');
+    showToast('Postado com sucesso! 🚀');
   }
 
   function showToast(msg) {
     const el = document.getElementById('toast');
     el.textContent = msg;
     el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 2000);
+    setTimeout(() => el.classList.remove('show'), 3000);
   }
 
   renderMyAvatars();
