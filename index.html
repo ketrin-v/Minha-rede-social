@@ -27,7 +27,42 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
+
+    /* ===== TELA DE LOGIN ===== */
+    #loginScreen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+      transition: transform 0.6s cubic-bezier(0.82, 0.01, 0.77, 0.41);
+    }
+    #loginScreen.hidden { transform: translateY(-100%); }
+
+    .login-card {
+      background: #fff; padding: 40px; border-radius: 24px;
+      width: 100%; max-width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .login-logo { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+    .login-logo span { color: var(--accent); }
+    .login-subtitle { color: var(--muted); margin-bottom: 30px; font-size: 0.95rem; }
+
+    .input-group { text-align: left; margin-bottom: 20px; }
+    .input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .input-group input {
+      width: 100%; padding: 12px 16px; border-radius: 12px;
+      border: 2px solid var(--border); outline: none; transition: border-color 0.2s;
+    }
+    .input-group input:focus { border-color: var(--primary); }
+
+    .btn-login {
+      width: 100%; background: var(--primary); color: #fff; border: none;
+      padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; margin-top: 10px;
+    }
+    .btn-login:hover { background: var(--primary-dk); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4); }
 
     /* ===== NAVBAR ===== */
     nav {
@@ -41,66 +76,30 @@
     }
     .nav-logo { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
     .nav-logo span { color: #a5b4fc; }
-    .nav-search { flex: 1; max-width: 360px; margin: 0 24px; position: relative; }
-    .nav-search input {
-      width: 100%; padding: 8px 16px 8px 40px;
-      border-radius: 999px; border: none;
-      background: rgba(255,255,255,.18); color: #fff;
-      font-size: .9rem; outline: none;
-    }
-    .nav-search input::placeholder { color: rgba(255,255,255,.7); }
-    .nav-search .icon-search { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,.7); }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
     .nav-btn {
-      background: rgba(255,255,255,.15); border: none; color: #fff;
+      background: rgba(255,255,255,0.15); border: none; color: #fff;
       border-radius: 999px; padding: 6px 12px; font-size: 1rem; cursor: pointer;
     }
 
     /* ===== AVATAR SYSTEM ===== */
     .avatar-box {
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-      flex-shrink: 0; user-select: none;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; flex-shrink: 0; user-select: none;
     }
-    .avatar-bg-circle {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
-    }
+    .avatar-bg-circle { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
     .avatar-emoji { font-size: 1.8em; z-index: 2; position: relative; margin-top: 10%; }
+    .avatar-accessory { position: absolute; top: 5%; left: 50%; transform: translateX(-50%); font-size: 1.2em; z-index: 5; }
+    .avatar-expression { position: absolute; bottom: 15%; right: 10%; font-size: 0.9em; z-index: 4; }
     
-    .avatar-accessory {
-      position: absolute; top: 5%; left: 50%; transform: translateX(-50%);
-      font-size: 1.2em; z-index: 5; pointer-events: none;
-    }
-    
-    .avatar-expression {
-      position: absolute; bottom: 15%; right: 10%;
-      font-size: 0.9em; z-index: 4; pointer-events: none;
-    }
-    
-    .avatar-glow {
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%);
-      z-index: 1; opacity: 0.5;
-    }
-
     .avatar-xl { width: 80px; height: 80px; font-size: 28px; border: 4px solid #fff; box-shadow: var(--shadow); }
     .avatar-md { width: 52px; height: 52px; font-size: 18px; }
     .avatar-sm { width: 36px; height: 36px; font-size: 14px; }
 
-    .avatar-accessory.face-item { top: 35%; font-size: 1em; }
-
     /* ===== LAYOUT ===== */
     .layout {
-      display: grid;
-      grid-template-columns: 280px 1fr 280px;
-      gap: 20px;
-      max-width: 1200px;
-      margin: calc(var(--nav-h) + 20px) auto 40px;
-      padding: 0 16px;
+      display: grid; grid-template-columns: 280px 1fr 280px; gap: 20px;
+      max-width: 1200px; margin: calc(var(--nav-h) + 20px) auto 40px; padding: 0 16px;
     }
     @media (max-width: 1024px) { .layout { grid-template-columns: 240px 1fr; } .sidebar-right { display: none; } }
     @media (max-width: 680px) { .layout { grid-template-columns: 1fr; } .sidebar-left { display: none; } }
@@ -114,99 +113,86 @@
     .profile-card { text-align: center; position: relative; }
     .profile-cover { height: 90px; background: linear-gradient(135deg, var(--primary), var(--accent)); }
     .profile-avatar-wrap { margin-top: -40px; display: flex; justify-content: center; }
-    
     .btn-customize-avatar {
-      position: absolute; top: 12px; right: 12px;
-      background: rgba(255,255,255,0.25); border: none;
-      width: 36px; height: 36px; border-radius: 50%;
-      color: #fff; cursor: pointer; font-size: 1.2rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; z-index: 10;
+      position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.25); border: none;
+      width: 36px; height: 36px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center; z-index: 10;
     }
-    .btn-customize-avatar:hover { background: rgba(255,255,255,0.4); transform: scale(1.1) rotate(15deg); }
-
     .profile-name { margin-top: 10px; font-weight: 700; font-size: 1.1rem; }
-    .profile-bio { font-size: .85rem; color: var(--muted); margin: 6px 0 16px; padding: 0 10px; }
+    .profile-bio { font-size: .85rem; color: var(--muted); margin: 6px 0 16px; }
 
     /* Painel de Personalização */
     .customize-panel {
       display: none; background: #f8fafc; border-top: 1px solid var(--border);
-      padding: 20px; text-align: left; animation: slideDown 0.3s ease-out;
-      max-height: 500px; overflow-y: auto;
+      padding: 20px; text-align: left; max-height: 400px; overflow-y: auto;
     }
     .customize-panel.active { display: block; }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
     .selector-group { margin-bottom: 16px; }
-    .selector-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: block; }
+    .selector-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 8px; font-weight: 800; text-transform: uppercase; display: block; }
     .options-grid { display: flex; gap: 8px; flex-wrap: wrap; }
     .opt-btn {
-      background: #fff; border: 2px solid var(--border);
-      width: 42px; height: 42px; border-radius: 10px; cursor: pointer; font-size: 1.2rem;
-      display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+      background: #fff; border: 2px solid var(--border); width: 42px; height: 42px; border-radius: 10px;
+      cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
     }
-    .opt-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
-    .opt-btn.active { border-color: var(--primary); background: #ede9fe; transform: scale(0.95); }
     .color-btn { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border); cursor: pointer; }
-    .color-btn.active { box-shadow: 0 0 0 2px var(--primary); }
 
     /* ===== FEED ===== */
     .feed { display: flex; flex-direction: column; }
     .new-post-card .card-body { display: flex; flex-direction: column; gap: 15px; }
     .new-post-top { display: flex; gap: 12px; align-items: flex-start; }
     .new-post-top textarea {
-      flex: 1; border: 2px solid var(--border); border-radius: 12px;
-      padding: 12px 16px; font-size: .95rem; resize: none;
-      font-family: inherit; outline: none; min-height: 80px; transition: border-color 0.2s;
+      flex: 1; border: 2px solid var(--border); border-radius: 12px; padding: 12px 16px;
+      font-size: .95rem; resize: none; font-family: inherit; outline: none; min-height: 80px;
     }
-    .new-post-top textarea:focus { border-color: var(--primary); }
     .btn-publish {
       background: var(--primary); color: #fff; border: none; border-radius: 999px;
-      padding: 10px 28px; font-size: .9rem; font-weight: 700; cursor: pointer;
-      transition: all 0.2s; align-self: flex-end;
+      padding: 10px 28px; font-size: .9rem; font-weight: 700; cursor: pointer; align-self: flex-end;
     }
 
     /* Posts */
     .post-header { padding: 16px 20px 0; display: flex; align-items: center; gap: 12px; }
     .post-meta { flex: 1; }
-    .post-author { font-weight: 700; font-size: 1rem; color: var(--text); }
+    .post-author { font-weight: 700; font-size: 1rem; }
     .post-time { font-size: .8rem; color: var(--muted); }
-    .post-text { padding: 15px 20px; font-size: 1rem; line-height: 1.6; color: #334155; }
+    .post-text { padding: 15px 20px; font-size: 1rem; line-height: 1.6; }
     .post-actions { display: flex; justify-content: space-around; padding: 10px; border-top: 1px solid var(--border); background: #fafafa; }
-    .action-btn {
-      flex: 1; background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: .9rem; font-weight: 600; padding: 10px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
-    }
-
-    /* ===== SIDEBAR DIREITA ===== */
-    .suggestion-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
-    .suggestion-info { flex: 1; }
-    .suggestion-name { font-weight: 700; font-size: .9rem; }
-    .btn-follow {
-      background: #f1f5f9; border: none; color: var(--primary); border-radius: 8px;
-      padding: 6px 14px; font-size: .8rem; font-weight: 700; cursor: pointer;
-    }
+    .action-btn { flex: 1; background: none; border: none; color: var(--muted); font-size: .9rem; font-weight: 600; padding: 10px; cursor: pointer; }
 
     /* ===== TOAST ===== */
     #toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-      background: #1e293b; color: #fff; padding: 12px 24px;
-      border-radius: 12px; font-size: .9rem; font-weight: 600;
-      opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 300;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      background: #1e293b; color: #fff; padding: 12px 24px; border-radius: 12px;
+      opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 2000;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
   </style>
 </head>
 <body>
 
+<!-- TELA DE LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Social<span>Net</span></div>
+    <p class="login-subtitle">Entre na sua conta para ver as novidades!</p>
+    
+    <div class="input-group">
+      <label>Usuário ou E-mail</label>
+      <input type="text" id="loginUser" placeholder="Ex: ketrin_vitoria" value="ketrin_vitoria">
+    </div>
+    
+    <div class="input-group">
+      <label>Senha</label>
+      <input type="password" id="loginPass" placeholder="••••••••" value="123456">
+    </div>
+    
+    <button class="btn-login" onclick="handleLogin()">Entrar</button>
+    <p style="margin-top: 20px; font-size: 0.85rem; color: var(--muted);">Esqueceu a senha? <a href="#" style="color: var(--primary); text-decoration: none;">Clique aqui</a></p>
+  </div>
+</div>
+
+<!-- CONTEÚDO DA REDE SOCIAL -->
 <nav>
   <div class="nav-logo">Social<span>Net</span></div>
-  <div class="nav-search">
-    <span class="icon-search">🔍</span>
-    <input type="text" placeholder="Pesquisar..." id="searchInput" />
-  </div>
   <div class="nav-actions">
     <button class="nav-btn" onclick="showToast('🔔 Sem notificações')">🔔</button>
     <div id="navMyAvatar"></div>
@@ -216,12 +202,12 @@
 <div class="layout">
   <aside class="sidebar-left">
     <div class="card profile-card">
-      <button class="btn-customize-avatar" onclick="toggleCustomizePanel()" title="Personalizar Avatar">🎨</button>
+      <button class="btn-customize-avatar" onclick="toggleCustomizePanel()">🎨</button>
       <div class="profile-cover"></div>
       <div class="profile-avatar-wrap" id="myAvatarLarge"></div>
       <div class="card-body" style="padding-top:8px;">
-        <div class="profile-name">Ketrin Vitória</div>
-        <div class="profile-bio">Escolha entre animais, monstros ou fantasmas! 👻👾</div>
+        <div class="profile-name" id="userNameDisplay">Ketrin Vitória</div>
+        <div class="profile-bio">Seja bem-vindo(a) de volta! ✨</div>
       </div>
 
       <div class="customize-panel" id="customizePanel">
@@ -231,52 +217,20 @@
             <button class="opt-btn" onclick="updateMyAvatar('animal', '👻')">👻</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '👾')">👾</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐶')">🐶</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦊')">🦊</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐼')">🐼</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦁')">🦁</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '🤖')">🤖</button>
             <button class="opt-btn" onclick="updateMyAvatar('animal', '👽')">👽</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🦄')">🦄</button>
           </div>
         </div>
-
         <div class="selector-group">
-          <span class="selector-label">Acessório (Topo):</span>
+          <span class="selector-label">Acessório:</span>
           <div class="options-grid">
             <button class="opt-btn" onclick="updateMyAvatar('accessory', '')">❌</button>
             <button class="opt-btn" onclick="updateMyAvatar('accessory', '👑')">👑</button>
-            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎩')">🎩</button>
             <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎓')">🎓</button>
-            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎀')">🎀</button>
-            <button class="opt-btn" onclick="updateMyAvatar('accessory', '✨')">✨</button>
             <button class="opt-btn" onclick="updateMyAvatar('accessory', '🎧')">🎧</button>
-            <button class="opt-btn" onclick="updateMyAvatar('accessory', '🕶️')">🕶️</button>
           </div>
         </div>
-
-        <div class="selector-group">
-          <span class="selector-label">Humor/Vibe:</span>
-          <div class="options-grid">
-            <button class="opt-btn" onclick="updateMyAvatar('expression', '')">😶</button>
-            <button class="opt-btn" onclick="updateMyAvatar('expression', '❤️')">❤️</button>
-            <button class="opt-btn" onclick="updateMyAvatar('expression', '🔥')">🔥</button>
-            <button class="opt-btn" onclick="updateMyAvatar('expression', '⭐')">⭐</button>
-            <button class="opt-btn" onclick="updateMyAvatar('expression', '💭')">💭</button>
-          </div>
-        </div>
-
-        <div class="selector-group">
-          <span class="selector-label">Fundo:</span>
-          <div class="options-grid">
-            <button class="color-btn" style="background:#fee2e2" onclick="updateMyAvatar('bg', '#fee2e2')"></button>
-            <button class="color-btn" style="background:#dcfce7" onclick="updateMyAvatar('bg', '#dcfce7')"></button>
-            <button class="color-btn" style="background:#dbeafe" onclick="updateMyAvatar('bg', '#dbeafe')"></button>
-            <button class="color-btn" style="background:linear-gradient(45deg, #fbcfe8, #d8b4fe)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #fbcfe8, #d8b4fe)')"></button>
-            <button class="color-btn" style="background:linear-gradient(45deg, #a5f3fc, #99f6e4)" onclick="updateMyAvatar('bg', 'linear-gradient(45deg, #a5f3fc, #99f6e4)')"></button>
-          </div>
-        </div>
-        <button class="btn-publish" style="width:100%; margin-top:10px;" onclick="toggleCustomizePanel()">Pronto!</button>
+        <button class="btn-publish" style="width:100%;" onclick="toggleCustomizePanel()">Salvar</button>
       </div>
     </div>
   </aside>
@@ -304,30 +258,34 @@
 <div id="toast"></div>
 
 <script>
+  // LÓGICA DE LOGIN
+  function handleLogin() {
+    const user = document.getElementById('loginUser').value;
+    const pass = document.getElementById('loginPass').value;
+
+    if (user.trim() !== "" && pass.trim() !== "") {
+      showToast('Bem-vindo(a), ' + user + '! ✨');
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('userNameDisplay').textContent = user;
+    } else {
+      showToast('⚠️ Preencha todos os campos!');
+    }
+  }
+
+  // LÓGICA DE AVATAR
   function createAvatarHTML(config, sizeClass = 'avatar-md') {
-    const isFaceItem = config.accessory === '🕶️';
     return `
       <div class="avatar-box ${sizeClass}" style="background: ${config.bg || '#e2e8f0'}">
-        <div class="avatar-bg-circle">
-          <span class="avatar-emoji">${config.animal || '👤'}</span>
-        </div>
-        ${config.accessory ? `<span class="avatar-accessory ${isFaceItem ? 'face-item' : ''}">${config.accessory}</span>` : ''}
-        ${config.expression ? `<span class="avatar-expression">${config.expression}</span>` : ''}
+        <div class="avatar-bg-circle"><span class="avatar-emoji">${config.animal || '👤'}</span></div>
+        ${config.accessory ? `<span class="avatar-accessory">${config.accessory}</span>` : ''}
         <div class="avatar-glow"></div>
       </div>
     `;
   }
 
-  let myAvatarConfig = { animal: '👻', accessory: '👑', expression: '✨', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
-
-  const USERS = [
-    { name: 'Lucas Mendes', avatar: { animal: '👾', accessory: '🎧', expression: '🔥', bg: '#dcfce7' } },
-    { name: 'Ana Paula',    avatar: { animal: '🦊', accessory: '✨', expression: '❤️', bg: '#fee2e2' } },
-  ];
-
-  let posts = [
-    { id: 1, user: USERS[0], time: '2h atrás', text: 'Os novos personagens de monstro e fantasma são demais! 👾👻', likes: 15 },
-  ];
+  let myAvatarConfig = { animal: '👻', accessory: '👑', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
+  const USERS = [{ name: 'Lucas', avatar: { animal: '👾', accessory: '🎧', bg: '#dcfce7' } }];
+  let posts = [{ id: 1, user: USERS[0], time: '2h atrás', text: 'Olá! Faça login para interagir!', likes: 5 }];
 
   function toggleCustomizePanel() { document.getElementById('customizePanel').classList.toggle('active'); }
 
@@ -335,7 +293,7 @@
     myAvatarConfig[type] = value;
     renderMyAvatars();
     renderAllPosts();
-    showToast('Visual atualizado! ✨');
+    showToast('Estilo atualizado! ✨');
   }
 
   function renderMyAvatars() {
@@ -351,14 +309,12 @@
         <div class="post-header">
           ${createAvatarHTML(userAvatar, 'avatar-md')}
           <div class="post-meta">
-            <div class="post-author">${post.user.name || 'Ketrin Vitória'}</div>
+            <div class="post-author">${post.user.name || document.getElementById('userNameDisplay').textContent}</div>
             <div class="post-time">${post.time}</div>
           </div>
         </div>
         <div class="post-text">${post.text}</div>
-        <div class="post-actions">
-          <button class="action-btn" onclick="showToast('Curtiu!')">❤️ Curtir (${post.likes})</button>
-        </div>
+        <div class="post-actions"><button class="action-btn" onclick="showToast('Curtiu!')">❤️ Curtir (${post.likes})</button></div>
       </div>
     `;
   }
@@ -369,20 +325,10 @@
     posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
   }
 
-  function renderSuggestions() {
-    document.getElementById('suggestions').innerHTML = USERS.map(u => `
-      <div class="suggestion-item">
-        ${createAvatarHTML(u.avatar, 'avatar-sm')}
-        <div class="suggestion-info"><div class="suggestion-name">${u.name}</div></div>
-        <button class="btn-follow" onclick="showToast('Seguindo!')">Seguir</button>
-      </div>
-    `).join('');
-  }
-
   function publishPost() {
     const txt = document.getElementById('newPostText');
     if (!txt.value.trim()) return;
-    posts.unshift({ id: Date.now(), user: { name: 'Ketrin Vitória', avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0 });
+    posts.unshift({ id: Date.now(), user: { name: document.getElementById('userNameDisplay').textContent, avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0 });
     txt.value = '';
     renderAllPosts();
     showToast('Postado! 🚀');
@@ -397,7 +343,6 @@
 
   renderMyAvatars();
   renderAllPosts();
-  renderSuggestions();
 </script>
 </body>
 </html>
