@@ -63,7 +63,6 @@
       width: 100%; padding: 12px 16px; border-radius: 12px;
       border: 2px solid var(--border); outline: none; transition: border-color 0.2s;
     }
-    .input-group input:focus { border-color: var(--primary); }
 
     .btn-login {
       width: 100%; background: var(--primary); color: #fff; border: none;
@@ -245,12 +244,19 @@
         <button class="btn-publish" onclick="publishPost()">Publicar</button>
       </div>
     </div>
+    <!-- O Feed começa vazio -->
+    <div id="emptyFeed" style="text-align:center; padding:40px; color:var(--muted);">
+      <p style="font-size:2rem; margin-bottom:10px;">📭</p>
+      <p>O feed está vazio. Seja o primeiro a postar algo!</p>
+    </div>
   </main>
 
   <aside class="sidebar-right">
     <div class="card">
       <div class="card-header">👥 Sugestões</div>
-      <div class="card-body" id="suggestions"></div>
+      <div class="card-body" id="suggestions">
+        <p style="font-size:0.85rem; color:var(--muted); text-align:center;">Nenhuma sugestão no momento.</p>
+      </div>
     </div>
   </aside>
 </div>
@@ -258,7 +264,6 @@
 <div id="toast"></div>
 
 <script>
-  // Checa se veio da página de cadastro
   window.onload = () => {
     const params = new URLSearchParams(window.location.search);
     const newUser = params.get('newUser');
@@ -271,11 +276,7 @@
   function handleLogin() {
     const user = document.getElementById('loginUser').value;
     const pass = document.getElementById('loginPass').value;
-    
-    if (!user || !pass) { 
-      showToast('⚠️ Por favor, preencha todos os campos!'); 
-      return; 
-    }
+    if (!user || !pass) { showToast('⚠️ Preencha todos os campos!'); return; }
     
     showToast('Bem-vindo(a), ' + user + '! ✨');
     document.getElementById('loginScreen').classList.add('hidden');
@@ -285,7 +286,6 @@
   function handleGoogleLogin() {
     showToast('Conectando com o Google... 🌐');
     setTimeout(() => {
-      showToast('Autenticado com sucesso! ✅');
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('userNameDisplay').textContent = "Usuário Google";
     }, 1500);
@@ -302,8 +302,7 @@
   }
 
   let myAvatarConfig = { animal: '👻', accessory: '👑', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
-  const USERS = [{ name: 'Lucas', avatar: { animal: '👾', accessory: '🎧', bg: '#dcfce7' } }];
-  let posts = [{ id: 1, user: USERS[0], time: '2h atrás', text: 'Seja bem-vindo à nossa rede social!', likes: 5 }];
+  let posts = []; // Começa vazio
 
   function toggleCustomizePanel() { document.getElementById('customizePanel').classList.toggle('active'); }
 
@@ -327,7 +326,7 @@
         <div class="post-header">
           ${createAvatarHTML(userAvatar, 'avatar-md')}
           <div class="post-meta">
-            <div class="post-author">${post.user.name || document.getElementById('userNameDisplay').textContent}</div>
+            <div class="post-author">${post.user.name}</div>
             <div class="post-time">${post.time}</div>
           </div>
         </div>
@@ -339,14 +338,28 @@
 
   function renderAllPosts() {
     const feed = document.getElementById('feed');
+    const empty = document.getElementById('emptyFeed');
+    
     feed.querySelectorAll('.post-card').forEach(p => p.remove());
-    posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
+    
+    if (posts.length === 0) {
+      empty.style.display = 'block';
+    } else {
+      empty.style.display = 'none';
+      posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
+    }
   }
 
   function publishPost() {
     const txt = document.getElementById('newPostText');
     if (!txt.value.trim()) return;
-    posts.unshift({ id: Date.now(), user: { name: document.getElementById('userNameDisplay').textContent, avatar: {...myAvatarConfig} }, time: 'agora', text: txt.value, likes: 0 });
+    posts.unshift({ 
+      id: Date.now(), 
+      user: { name: document.getElementById('userNameDisplay').textContent, avatar: {...myAvatarConfig} }, 
+      time: 'agora', 
+      text: txt.value, 
+      likes: 0 
+    });
     txt.value = '';
     renderAllPosts();
     showToast('Postado! 🚀');
