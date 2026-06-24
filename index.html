@@ -50,7 +50,9 @@
       padding: 12px; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
       cursor: pointer; margin-top: 20px;
       display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: all 0.2s;
     }
+    .btn-google:hover { background: #f8fafc; border-color: #cbd5e1; }
 
     .divider { margin: 20px 0; display: flex; align-items: center; color: var(--muted); font-size: 0.8rem; }
     .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border); margin: 0 10px; }
@@ -61,6 +63,7 @@
       width: 100%; padding: 12px 16px; border-radius: 12px;
       border: 2px solid var(--border); outline: none; transition: border-color 0.2s;
     }
+    .input-group input:focus { border-color: var(--primary); }
 
     .btn-login {
       width: 100%; background: var(--primary); color: #fff; border: none;
@@ -183,11 +186,11 @@
 
     <div class="input-group">
       <label>Usuário</label>
-      <input type="text" id="loginUser" placeholder="Ex: ketrin_vitoria" value="ketrin_vitoria">
+      <input type="text" id="loginUser" placeholder="Seu nome de usuário">
     </div>
     <div class="input-group">
       <label>Senha</label>
-      <input type="password" id="loginPass" placeholder="••••••" value="123456">
+      <input type="password" id="loginPass" placeholder="Sua senha">
     </div>
     <button class="btn-login" onclick="handleLogin()">Entrar na Rede Social</button>
 
@@ -213,7 +216,7 @@
       <div class="profile-cover"></div>
       <div class="profile-avatar-wrap" id="myAvatarLarge"></div>
       <div class="card-body" style="padding-top:8px;">
-        <div class="profile-name" id="userNameDisplay">Ketrin Vitória</div>
+        <div class="profile-name" id="userNameDisplay">Visitante</div>
         <div class="profile-bio">Seja bem-vindo(a)! ✨</div>
       </div>
 
@@ -267,7 +270,12 @@
 
   function handleLogin() {
     const user = document.getElementById('loginUser').value;
-    if (!user) { showToast('⚠️ Digite seu usuário!'); return; }
+    const pass = document.getElementById('loginPass').value;
+    
+    if (!user || !pass) { 
+      showToast('⚠️ Por favor, preencha todos os campos!'); 
+      return; 
+    }
     
     showToast('Bem-vindo(a), ' + user + '! ✨');
     document.getElementById('loginScreen').classList.add('hidden');
@@ -277,6 +285,7 @@
   function handleGoogleLogin() {
     showToast('Conectando com o Google... 🌐');
     setTimeout(() => {
+      showToast('Autenticado com sucesso! ✅');
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('userNameDisplay').textContent = "Usuário Google";
     }, 1500);
@@ -294,7 +303,7 @@
 
   let myAvatarConfig = { animal: '👻', accessory: '👑', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
   const USERS = [{ name: 'Lucas', avatar: { animal: '👾', accessory: '🎧', bg: '#dcfce7' } }];
-  let posts = [{ id: 1, user: USERS[0], time: '2h atrás', text: 'Olá! A página de cadastro agora é separada.', likes: 5 }];
+  let posts = [{ id: 1, user: USERS[0], time: '2h atrás', text: 'Seja bem-vindo à nossa rede social!', likes: 5 }];
 
   function toggleCustomizePanel() { document.getElementById('customizePanel').classList.toggle('active'); }
 
