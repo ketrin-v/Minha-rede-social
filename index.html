@@ -91,6 +91,7 @@
       position: relative; overflow: hidden; flex-shrink: 0; user-select: none;
     }
     .avatar-bg-circle { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .avatar-initials { font-weight: 800; color: #fff; text-transform: uppercase; }
     .avatar-emoji { font-size: 1.8em; z-index: 2; position: relative; margin-top: 10%; }
     .avatar-accessory { position: absolute; top: 5%; left: 50%; transform: translateX(-50%); font-size: 1.2em; z-index: 5; }
     
@@ -126,16 +127,19 @@
     /* Painel de Personalização */
     .customize-panel {
       display: none; background: #f8fafc; border-top: 1px solid var(--border);
-      padding: 20px; text-align: left; max-height: 400px; overflow-y: auto;
+      padding: 20px; text-align: left; max-height: 450px; overflow-y: auto;
     }
     .customize-panel.active { display: block; }
     .selector-group { margin-bottom: 16px; }
     .selector-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 8px; font-weight: 800; text-transform: uppercase; display: block; }
-    .options-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 8px; }
     .opt-btn {
-      background: #fff; border: 2px solid var(--border); width: 42px; height: 42px; border-radius: 10px;
+      background: #fff; border: 2px solid var(--border); height: 42px; border-radius: 10px;
       cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
     }
+    .opt-btn:hover { border-color: var(--primary); background: #f1f5f9; }
+    .opt-btn.active { border-color: var(--primary); background: #e0e7ff; }
 
     /* ===== FEED ===== */
     .feed { display: flex; flex-direction: column; }
@@ -222,14 +226,21 @@
       <div class="customize-panel" id="customizePanel">
         <div class="selector-group">
           <span class="selector-label">Personagem:</span>
-          <div class="options-grid">
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '👻')">👻</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '👾')">👾</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🐱')">🐱</button>
-            <button class="opt-btn" onclick="updateMyAvatar('animal', '🤖')">🤖</button>
-          </div>
+          <div class="options-grid" id="opt-characters"></div>
         </div>
-        <button class="btn-publish" style="width:100%;" onclick="toggleCustomizePanel()">Salvar</button>
+        <div class="selector-group">
+          <span class="selector-label">Acessórios:</span>
+          <div class="options-grid" id="opt-accessories"></div>
+        </div>
+        <div class="selector-group">
+          <span class="selector-label">Expressões:</span>
+          <div class="options-grid" id="opt-expressions"></div>
+        </div>
+        <div class="selector-group">
+          <span class="selector-label">Fundo:</span>
+          <div class="options-grid" id="opt-backgrounds"></div>
+        </div>
+        <button class="btn-publish" style="width:100%; margin-top:10px;" onclick="toggleCustomizePanel()">Salvar Avatar</button>
       </div>
     </div>
   </aside>
@@ -244,7 +255,6 @@
         <button class="btn-publish" onclick="publishPost()">Publicar</button>
       </div>
     </div>
-    <!-- O Feed começa vazio -->
     <div id="emptyFeed" style="text-align:center; padding:40px; color:var(--muted);">
       <p style="font-size:2rem; margin-bottom:10px;">📭</p>
       <p>O feed está vazio. Seja o primeiro a postar algo!</p>
@@ -264,6 +274,28 @@
 <div id="toast"></div>
 
 <script>
+  let currentUser = "Visitante";
+  let myAvatarConfig = { 
+    animal: '', // Vazio por padrão para mostrar iniciais
+    accessory: '', 
+    expression: '',
+    bg: 'linear-gradient(135deg, #6366f1, #a855f7)' 
+  };
+  let posts = [];
+
+  const AVATAR_OPTIONS = {
+    characters: ['👻', '👾', '🤖', '👽', '💀', '🎃', '🤡', '👺', '👹', '🐲'],
+    accessories: ['', '👑', '🎓', '🎩', '🎀', '🎧', '🕶️', '🚀', '⭐', '🔥'],
+    expressions: ['', '❤️', '✨', '💭', '💢', '💤', '💎', '🍀', '🎵', '⚡'],
+    backgrounds: [
+      'linear-gradient(135deg, #6366f1, #a855f7)',
+      'linear-gradient(135deg, #f43f5e, #fb923c)',
+      'linear-gradient(135deg, #10b981, #3b82f6)',
+      'linear-gradient(135deg, #f59e0b, #d946ef)',
+      '#1e293b', '#4f46e5', '#ec4899', '#10b981'
+    ]
+  };
+
   window.onload = () => {
     const params = new URLSearchParams(window.location.search);
     const newUser = params.get('newUser');
@@ -271,38 +303,81 @@
       document.getElementById('loginUser').value = newUser;
       showToast('Conta criada! Agora é só entrar. 🎉');
     }
+    initAvatarOptions();
   };
+
+  function getInitials(name) {
+    if (!name) return "??";
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return parts[0].substring(0, 2).toUpperCase();
+  }
 
   function handleLogin() {
     const user = document.getElementById('loginUser').value;
     const pass = document.getElementById('loginPass').value;
     if (!user || !pass) { showToast('⚠️ Preencha todos os campos!'); return; }
     
-    showToast('Bem-vindo(a), ' + user + '! ✨');
+    currentUser = user;
+    showToast('Bem-vindo(a), ' + currentUser + '! ✨');
     document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('userNameDisplay').textContent = user;
+    document.getElementById('userNameDisplay').textContent = currentUser;
+    renderMyAvatars();
   }
 
   function handleGoogleLogin() {
     showToast('Conectando com o Google... 🌐');
     setTimeout(() => {
+      currentUser = "Usuário Google";
       document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('userNameDisplay').textContent = "Usuário Google";
+      document.getElementById('userNameDisplay').textContent = currentUser;
+      renderMyAvatars();
     }, 1500);
   }
 
-  function createAvatarHTML(config, sizeClass = 'avatar-md') {
+  function createAvatarHTML(config, sizeClass = 'avatar-md', name = "") {
+    const initials = getInitials(name || currentUser);
+    
+    // Se não houver personagem, mostra iniciais
+    const content = config.animal 
+      ? `<span class="avatar-emoji">${config.animal}</span>`
+      : `<span class="avatar-initials">${initials}</span>`;
+
     return `
-      <div class="avatar-box ${sizeClass}" style="background: ${config.bg || '#e2e8f0'}">
-        <div class="avatar-bg-circle"><span class="avatar-emoji">${config.animal || '👤'}</span></div>
+      <div class="avatar-box ${sizeClass}" style="background: ${config.bg}">
+        <div class="avatar-bg-circle">${content}</div>
         ${config.accessory ? `<span class="avatar-accessory">${config.accessory}</span>` : ''}
-        <div class="avatar-glow"></div>
+        ${config.expression ? `<span class="avatar-accessory" style="left: 80%; top: 20%; font-size: 0.8em;">${config.expression}</span>` : ''}
       </div>
     `;
   }
 
-  let myAvatarConfig = { animal: '👻', accessory: '👑', bg: 'linear-gradient(45deg, #fbcfe8, #d8b4fe)' };
-  let posts = []; // Começa vazio
+  function initAvatarOptions() {
+    const gridChar = document.getElementById('opt-characters');
+    const gridAcc = document.getElementById('opt-accessories');
+    const gridExp = document.getElementById('opt-expressions');
+    const gridBg = document.getElementById('opt-backgrounds');
+
+    // Botão para voltar para iniciais
+    gridChar.innerHTML = `<button class="opt-btn" onclick="updateMyAvatar('animal', '')">Abc</button>`;
+    AVATAR_OPTIONS.characters.forEach(c => {
+      gridChar.innerHTML += `<button class="opt-btn" onclick="updateMyAvatar('animal', '${c}')">${c}</button>`;
+    });
+
+    AVATAR_OPTIONS.accessories.forEach(a => {
+      gridAcc.innerHTML += `<button class="opt-btn" onclick="updateMyAvatar('accessory', '${a}')">${a || '🚫'}</button>`;
+    });
+
+    AVATAR_OPTIONS.expressions.forEach(e => {
+      gridExp.innerHTML += `<button class="opt-btn" onclick="updateMyAvatar('expression', '${e}')">${e || '🚫'}</button>`;
+    });
+
+    AVATAR_OPTIONS.backgrounds.forEach(b => {
+      gridBg.innerHTML += `<button class="opt-btn" style="background:${b}" onclick="updateMyAvatar('bg', '${b}')"></button>`;
+    });
+  }
 
   function toggleCustomizePanel() { document.getElementById('customizePanel').classList.toggle('active'); }
 
@@ -310,7 +385,11 @@
     myAvatarConfig[type] = value;
     renderMyAvatars();
     renderAllPosts();
-    showToast('Estilo atualizado! ✨');
+    if (value === '') {
+      showToast('Voltando para as iniciais! 🔤');
+    } else {
+      showToast('Avatar atualizado! ✨');
+    }
   }
 
   function renderMyAvatars() {
@@ -320,11 +399,10 @@
   }
 
   function renderPost(post) {
-    const userAvatar = post.user.avatar || myAvatarConfig;
     return `
       <div class="card post-card">
         <div class="post-header">
-          ${createAvatarHTML(userAvatar, 'avatar-md')}
+          ${createAvatarHTML(post.user.avatar, 'avatar-md', post.user.name)}
           <div class="post-meta">
             <div class="post-author">${post.user.name}</div>
             <div class="post-time">${post.time}</div>
@@ -339,15 +417,9 @@
   function renderAllPosts() {
     const feed = document.getElementById('feed');
     const empty = document.getElementById('emptyFeed');
-    
     feed.querySelectorAll('.post-card').forEach(p => p.remove());
-    
-    if (posts.length === 0) {
-      empty.style.display = 'block';
-    } else {
-      empty.style.display = 'none';
-      posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post)));
-    }
+    if (posts.length === 0) { empty.style.display = 'block'; } 
+    else { empty.style.display = 'none'; posts.forEach(post => feed.insertAdjacentHTML('beforeend', renderPost(post))); }
   }
 
   function publishPost() {
@@ -355,7 +427,7 @@
     if (!txt.value.trim()) return;
     posts.unshift({ 
       id: Date.now(), 
-      user: { name: document.getElementById('userNameDisplay').textContent, avatar: {...myAvatarConfig} }, 
+      user: { name: currentUser, avatar: {...myAvatarConfig} }, 
       time: 'agora', 
       text: txt.value, 
       likes: 0 
